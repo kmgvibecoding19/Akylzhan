@@ -2,1048 +2,1023 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ДешевлеНайти — поиск товаров по самой низкой цене</title>
+<meta name="description" content="Найдите, где дешевле: один поиск по маркетплейсам, интернет-магазинам и магазинам-приложениям. Поиск по названию, марке, модели или фото.">
+<meta property="og:title" content="ДешевлеНайти — найдите, где дешевле">
+<meta property="og:description" content="Сравнение цен на маркетплейсах, в интернет-магазинах и приложениях на одной странице.">
+<meta property="og:type" content="website">
 <meta name="color-scheme" content="light dark">
-<title>Семейный бюджет</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f4f6f9;--surface:#ffffff;--surface-2:#eef1f5;--text:#1a1f26;--muted:#5d6876;--border:#e1e5eb;
-  --accent:#3454d1;--accent-ink:#ffffff;--inc:#127a4b;--exp:#c2412b;--inc-soft:#e6f5ed;--exp-soft:#fcebe7;
-  --shadow:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.07);--radius:14px;
+  --bg:#FFFFFF; --soft:#FFF3F3; --accent:#E30613; --accent-h:#B8000F; --ring:#FDE2E3;
+  --text:#1A1A1A; --muted:#6B6B6B; --line:#EFE1E1; --card:#FFFFFF; --on-accent:#FFFFFF;
+  --blue-bg:#E8F0FE; --blue:#1A56C4; --green-bg:#E6F6EC; --green:#137A3B; --purple-bg:#F1E9FD; --purple:#6B2FC4;
+  --skel:#F4ECEC; --shadow:0 12px 32px rgba(26,26,26,.10);
+  --header-h:64px;
 }
-@media (prefers-color-scheme:dark){
+@media (prefers-color-scheme: dark){
   :root{
-    --bg:#0e1116;--surface:#161a20;--surface-2:#1f242c;--text:#e7eaee;--muted:#9ba6b3;--border:#2a313b;
-    --accent:#7d95ff;--accent-ink:#0b0f1a;--inc:#4cc38a;--exp:#ff7b65;--inc-soft:#13261d;--exp-soft:#2d1915;
-    --shadow:0 1px 2px rgba(0,0,0,.4);
+    --bg:#141213; --soft:#1E1A1B; --accent:#FF2A36; --accent-h:#FF5A63; --ring:#3A1C1F;
+    --text:#F4EFEF; --muted:#A79C9D; --line:#2E2829; --card:#1A1718;
+    --blue-bg:#1B2638; --blue:#8DB4FF; --green-bg:#15291D; --green:#6FD596; --purple-bg:#261C38; --purple:#C3A1FF;
+    --skel:#241F20; --shadow:0 12px 32px rgba(0,0,0,.5);
   }
 }
-*{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
-.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
-main.wrap{padding-top:16px;padding-bottom:96px;display:grid;gap:16px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;min-width:0}
-.muted{color:var(--muted)}
-.hint{font-size:13px;color:var(--muted)}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.5 "Onest",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow-x:hidden}
+img,svg{display:block}
+a{color:var(--accent)}
+a:hover{color:var(--accent-h)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+section{scroll-margin-top:calc(var(--header-h) + 8px)}
+.ico{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
-/* Шапка */
-.topbar{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
-.topbar-in{display:flex;align-items:center;justify-content:space-between;gap:12px;height:60px}
-.brand{display:flex;align-items:center;gap:10px;min-width:0}
-.logo{width:36px;height:36px;border-radius:10px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-weight:700;font-size:18px;flex:none}
-.brand-title{font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brand-sub{font-size:12px;color:var(--muted)}
-.brand>div{min-width:0}
-.topbar-actions{display:flex;align-items:center;gap:8px;flex:none}
-.who{display:flex;align-items:center;gap:6px}
-.avatar{width:32px;height:32px;border-radius:50%;background:var(--surface-2);border:1px solid var(--border);display:grid;place-items:center;font-weight:650;font-size:13px;flex:none}
+/* ── Шапка ── */
+.header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.header .wrap{height:var(--header-h);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-weight:800;font-size:20px;letter-spacing:-.02em;white-space:nowrap}
+.logo:hover{color:var(--text)}
+.logo b{color:var(--accent);font-weight:800}
+.nav{display:flex;gap:4px}
+.nav a{color:var(--text);text-decoration:none;font-weight:500;padding:8px 12px;border-radius:10px;font-size:15px}
+.nav a:hover{background:var(--soft);color:var(--accent)}
 
-/* Контролы */
-select,input{font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 10px;min-height:40px;min-width:0;width:100%}
-input[type=color]{padding:4px;width:44px;flex:none}
-input[aria-invalid=true]{border-color:var(--exp)}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.btn{font:inherit;font-weight:600;border:1px solid transparent;background:var(--accent);color:var(--accent-ink);border-radius:10px;padding:8px 14px;min-height:40px;cursor:pointer;white-space:nowrap}
-.btn:hover{filter:brightness(1.06)}
-.btn.ghost{background:transparent;color:var(--text);border-color:var(--border)}
-.btn.ghost:hover{background:var(--surface-2);filter:none}
-.btn.danger{background:var(--exp);color:#fff}
-.btn.sm{min-height:32px;padding:4px 10px;font-size:13px}
-.btn.icon{width:40px;padding:0;font-size:18px}
-.btn.link-danger{background:none;border:0;color:var(--exp);padding:4px 8px}
-.seg{display:inline-flex;flex-wrap:wrap;gap:4px;background:var(--surface-2);padding:4px;border-radius:12px}
-.seg button{font:inherit;font-size:14px;border:0;background:transparent;color:var(--muted);padding:6px 12px;border-radius:9px;cursor:pointer;min-height:34px}
-.seg button:hover{color:var(--text)}
-.seg button[aria-pressed=true],.seg button[aria-selected=true]{background:var(--surface);color:var(--text);box-shadow:var(--shadow);font-weight:600}
-.field{display:grid;gap:4px;font-size:13px;color:var(--muted);min-width:0}
+/* ── Поисковик ── */
+.hero{padding:clamp(40px,8vw,96px) 0 56px}
+.hero h1{font-size:clamp(40px,8.4vw,88px);line-height:.98;font-weight:800;letter-spacing:-.045em;margin:0 0 18px}
+.hero h1 span{color:var(--accent)}
+.hero .lead{font-size:clamp(17px,2vw,20px);color:var(--muted);max-width:640px;margin:0 0 32px}
+.search-form{position:relative;max-width:920px}
+.search-box{position:relative;display:flex;align-items:center;height:68px;border:3px solid var(--accent);border-radius:18px;background:var(--card);transition:box-shadow .2s,background .2s}
+.search-box:focus-within{box-shadow:0 0 0 6px var(--ring)}
+.search-box.drag{border-style:dashed;background:var(--soft);box-shadow:0 0 0 6px var(--ring)}
+.search-box .s-ico{flex:none;margin-left:18px;color:var(--muted)}
+.search-box input{flex:1;min-width:0;height:100%;border:0;background:transparent;outline:0;padding:0 12px;font-size:18px;font-weight:500}
+.search-box input::placeholder{color:var(--muted);font-weight:400}
+.search-box input::-webkit-search-cancel-button{display:none}
+.cam-btn{flex:none;width:48px;height:48px;border:0;border-radius:12px;background:transparent;color:var(--accent);display:grid;place-items:center}
+.cam-btn:hover{background:var(--soft)}
+.find-btn{flex:none;height:calc(100% - 12px);margin:0 6px 0 4px;padding:0 28px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:17px;transition:background .15s}
+.find-btn:hover{background:var(--accent-h)}
+.find-btn:disabled{opacity:.55;cursor:progress}
+.drop-hint{position:absolute;inset:0;display:none;align-items:center;justify-content:center;border-radius:15px;background:var(--soft);color:var(--accent);font-weight:700;font-size:17px;pointer-events:none}
+.search-box.drag .drop-hint{display:flex}
+.suggest{position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:20;margin:0;padding:6px;list-style:none;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.suggest li{padding:10px 14px;border-radius:10px;cursor:pointer;display:flex;justify-content:space-between;gap:12px}
+.suggest li small{color:var(--muted)}
+.suggest li[aria-selected="true"],.suggest li:hover{background:var(--soft);color:var(--accent)}
+.form-msg{margin:10px 0 0;color:var(--accent);font-weight:500;min-height:0}
+.form-msg:empty{display:none}
+.preview{display:flex;align-items:center;gap:12px;margin-top:12px;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--soft);max-width:560px}
+.preview[hidden]{display:none}
+.preview .thumb{flex:none;width:56px;height:56px;border-radius:10px;overflow:hidden;background:var(--card);display:grid;place-items:center;font-weight:700;font-size:13px;color:var(--muted);border:1px solid var(--line)}
+.preview .thumb img{width:100%;height:100%;object-fit:cover}
+.preview .meta{flex:1;min-width:0}
+.preview .fname{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.preview .status{font-size:14px;color:var(--muted)}
+.preview .status.err{color:var(--accent);font-weight:500}
+.preview .status.ok{color:var(--text)}
+.preview .x{flex:none;width:36px;height:36px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-size:20px;line-height:1}
+.preview .x:hover{background:var(--card);color:var(--accent)}
+.mini-spin{display:inline-block;width:12px;height:12px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-1px;margin-right:6px}
+.chips-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:18px}
+.chips-row .lbl{color:var(--muted);font-size:15px;margin-right:4px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-size:15px;font-weight:500;transition:border-color .15s,color .15s,background .15s}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:48px 0 0;padding:0;list-style:none;max-width:920px}
+.steps li{display:flex;gap:12px;align-items:flex-start;color:var(--muted);font-size:15px}
+.steps b{flex:none;width:32px;height:32px;border-radius:50%;background:var(--soft);color:var(--accent);display:grid;place-items:center;font-weight:800}
+.steps strong{display:block;color:var(--text);font-weight:600}
 
-/* Фильтры */
-.filters{display:grid;gap:12px}
-.filter-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end}
-.period-label{font-size:13px;color:var(--muted)}
+/* ── Разделы ── */
+.sec{padding:56px 0;border-top:1px solid var(--line)}
+.sec h2{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin:0 0 8px}
+.sec .sub{color:var(--muted);margin:0 0 28px}
 
-/* Сводка */
-.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.stat-label{font-size:13px;color:var(--muted);font-weight:500}
-.stat-val{font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-.01em;margin-top:4px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.inc{color:var(--inc)}.exp{color:var(--exp)}
-.stat-bal.pos{background:var(--inc-soft)}.stat-bal.pos .stat-val{color:var(--inc)}
-.stat-bal.neg{background:var(--exp-soft)}.stat-bal.neg .stat-val{color:var(--exp)}
-.progress{height:8px;border-radius:99px;background:var(--surface-2);margin-top:10px;overflow:hidden}
-.stat-bal .progress{background:var(--surface)}
-.progress>div{height:100%;width:0;background:var(--exp);border-radius:inherit;transition:width .3s}
-.stat-bal.pos .progress>div{background:var(--inc)}
-.stat-note{font-size:13px;color:var(--muted);margin-top:6px}
-.savings{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;padding:12px 16px}
-.savings strong{font-size:18px;font-variant-numeric:tabular-nums}
+/* ── Категории ── */
+.cats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.cat{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:118px;padding:16px 8px;border:1px solid var(--line);border-radius:16px;background:var(--card);text-align:center;font-weight:600;font-size:14px;line-height:1.25;transition:border-color .15s,background .15s,color .15s}
+.cat .ico{width:34px;height:34px;color:var(--accent);stroke-width:1.6}
+.cat:hover{border-color:var(--accent)}
+.cat[aria-expanded="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.cat[aria-expanded="true"] .ico{color:var(--on-accent)}
+.subpanel{margin-top:14px;padding:18px;border-radius:16px;background:var(--soft);border:1px solid var(--line)}
+.subpanel[hidden]{display:none}
+.subpanel h3{margin:0 0 12px;font-size:18px}
+.subpanel .btns{display:flex;flex-wrap:wrap;gap:8px}
+.btn-primary{border:0;background:var(--accent);color:var(--on-accent);border-radius:12px;padding:10px 18px;font-weight:700}
+.btn-primary:hover{background:var(--accent-h)}
+.btn-ghost{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 16px;font-weight:500}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
 
-/* Итоги и график */
-.two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:16px}
-.card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-.card-head h2{font-size:16px;margin:0}
-.totals{display:grid;gap:2px;max-height:430px;overflow:auto;margin:0 -8px;padding:0 4px}
-.trow{display:grid;grid-template-columns:minmax(0,1fr) auto 44px;grid-template-areas:"name sum pct" "bar bar bar";gap:6px 10px;width:100%;text-align:left;font:inherit;color:inherit;background:none;border:0;border-radius:10px;padding:8px;cursor:pointer}
-.trow:hover{background:var(--surface-2)}
-.trow[aria-pressed=true]{background:var(--surface-2);box-shadow:inset 0 0 0 2px var(--accent)}
-.tname{grid-area:name;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tsum{grid-area:sum;font-weight:600;font-variant-numeric:tabular-nums}
-.tpct{grid-area:pct;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
-.tbar{grid-area:bar;height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden}
-.trow:hover .tbar,.trow[aria-pressed=true] .tbar{background:var(--surface)}
-.tbar i{display:block;height:100%;border-radius:inherit}
-.totals-foot{display:flex;justify-content:space-between;border-top:1px solid var(--border);margin-top:8px;padding-top:10px;font-size:14px}
-.chart-ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.chart-ctrl select{width:auto;min-height:34px;padding:4px 8px;font-size:14px}
-.chart-wrap{position:relative}
-svg.chart{width:100%;height:auto;display:block;overflow:visible}
-.chart .grid{stroke:var(--border)}
-.chart .zero{stroke:var(--muted);stroke-opacity:.6}
-.chart text{fill:var(--muted);font-size:11px}
-.chart .b-inc{fill:var(--inc)}
-.chart .b-exp{fill:var(--exp)}
-.chart .line{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round}
-.chart .dot{fill:var(--surface);stroke:var(--accent);stroke-width:2}
-.chart .hit{fill:var(--text);fill-opacity:0;cursor:pointer;outline:none}
-.chart .hit.on{fill-opacity:.06}
-.legend{display:flex;gap:14px;font-size:13px;color:var(--muted);flex-wrap:wrap;margin-top:8px}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
-.legend .l-line{height:3px;border-radius:2px;vertical-align:3px}
-.tip{position:absolute;top:6px;pointer-events:none;background:var(--surface);border:1px solid var(--border);box-shadow:0 8px 24px rgba(0,0,0,.16);border-radius:10px;padding:10px 12px;font-size:13px;min-width:210px;z-index:5;opacity:0;transition:opacity .12s}
-.tip.show{opacity:1}
-.tip h4{margin:0 0 6px;font-size:13px}
-.tip .r{display:flex;justify-content:space-between;gap:16px;font-variant-numeric:tabular-nums}
-.tip .d{color:var(--muted);font-size:12px;margin-top:2px}
+/* ── Результаты ── */
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.toolbar[hidden],.tags[hidden]{display:none}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:6px 6px 6px 12px;border-radius:999px;background:var(--soft);border:1px solid var(--line);font-size:14px;font-weight:500;max-width:100%}
+.tag span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tag button{border:0;background:transparent;width:24px;height:24px;border-radius:50%;color:var(--muted);font-size:15px;line-height:1;flex:none}
+.tag button:hover{background:var(--card);color:var(--accent)}
+.seg{display:flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:14px;background:var(--soft);border:1px solid var(--line)}
+.seg button{border:0;background:transparent;border-radius:10px;padding:7px 12px;font-size:14px;font-weight:600;color:var(--muted)}
+.seg button small{font-weight:500;opacity:.8}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--accent);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.sort{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.sort select{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 10px;font-weight:600;color:var(--text)}
+.summary{font-size:17px;margin:0 0 12px;font-weight:500}
+.summary b{font-weight:700}
+.demo-note{display:inline-block;font-size:13px;color:var(--muted);background:var(--soft);border-radius:8px;padding:4px 10px;margin-bottom:12px}
+.list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:96px minmax(0,1fr) 270px 190px;grid-template-areas:"photo info contacts price";gap:20px;align-items:start;padding:18px 16px;border-bottom:1px solid var(--line);transition:background .15s;position:relative}
+.row:hover{background:var(--soft)}
+.row.best{background:var(--soft);box-shadow:inset 4px 0 0 var(--accent)}
+.r-photo{grid-area:photo;width:96px;height:96px;border-radius:14px;background:var(--soft);border:1px solid var(--line);display:grid;place-items:center;color:var(--accent);overflow:hidden}
+.r-photo .ico{width:44px;height:44px;stroke-width:1.4}
+.r-photo img{width:100%;height:100%;object-fit:cover}
+.r-photo.none{color:var(--muted);font-size:12px;font-weight:600;text-align:center;line-height:1.2;background:var(--card)}
+.r-info{grid-area:info;min-width:0}
+.r-name{font-size:17px;font-weight:600;line-height:1.3;margin:0 0 8px;overflow-wrap:anywhere}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-size:13px;font-weight:600}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.pill.mp{background:var(--blue-bg);color:var(--blue)}
+.pill.shop{background:var(--green-bg);color:var(--green)}
+.pill.app{background:var(--purple-bg);color:var(--purple)}
+.r-upd{margin:8px 0 0;font-size:13px;color:var(--muted)}
+.r-contacts{grid-area:contacts;min-width:0;font-size:14px;display:flex;flex-direction:column;gap:3px}
+.r-contacts b{font-size:15px}
+.r-contacts a{text-decoration:none;overflow-wrap:anywhere}
+.r-contacts a:hover{text-decoration:underline}
+.r-contacts .c{color:var(--text)}
+.r-contacts .c:hover{color:var(--accent)}
+.r-contacts .site{color:var(--accent);font-weight:600}
+.r-contacts .nosite{color:var(--muted)}
+.r-price{grid-area:price;display:flex;flex-direction:column;align-items:flex-end;gap:4px;text-align:right}
+.price{font-size:28px;font-weight:800;color:var(--accent);letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.1}
+.old{color:var(--muted);font-size:15px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.best-tag{position:relative;display:inline-block;background:var(--accent);color:var(--on-accent);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:4px 10px 4px 20px;clip-path:polygon(10px 0,100% 0,100% 100%,10px 100%,0 50%);border-radius:0 6px 6px 0;margin-bottom:4px;white-space:nowrap}
+.best-tag::before{content:"";position:absolute;left:8px;top:50%;width:5px;height:5px;margin-top:-2.5px;border-radius:50%;background:var(--bg)}
+.more-wrap{text-align:center;margin-top:20px}
+.more-wrap[hidden]{display:none}
+.disclaimer{margin:20px 0 0;font-size:13px;color:var(--muted)}
+.state{text-align:center;padding:48px 16px;border:1px dashed var(--line);border-radius:18px}
+.state h3{font-size:22px;margin:0 0 8px}
+.state p{color:var(--muted);margin:0 auto 18px;max-width:520px}
+.state .chips-row{justify-content:center;margin-top:0}
+.loading{display:flex;align-items:center;gap:10px;color:var(--muted);font-weight:500;margin-bottom:12px}
+.spin{width:20px;height:20px;border:3px solid var(--ring);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.skel .sk{background:var(--skel);border-radius:8px;position:relative;overflow:hidden}
+.skel .sk::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:sh 1.3s infinite}
+@media (prefers-color-scheme: dark){.skel .sk::after{background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}}
+@keyframes sh{to{transform:translateX(100%)}}
+.skel .r-photo{border:0}
+.skel .r-photo.sk{border-radius:14px}
 
-/* Форма добавления */
-.add-form{display:grid;grid-template-columns:auto minmax(0,1.1fr) minmax(0,1.4fr) minmax(0,2fr) minmax(0,1fr) auto;gap:10px;align-items:end}
-.add-form .btn{min-height:40px}
-.form-err{color:var(--exp);font-size:13px;min-height:18px;margin-top:6px}
-.type-toggle .seg button{min-height:32px}
+/* ── Подвал ── */
+.footer{border-top:3px solid var(--accent);padding:40px 0 calc(28px + env(safe-area-inset-bottom));margin-top:40px}
+.fcols{display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px}
+.footer h4{margin:0 0 12px;font-size:15px}
+.footer p{margin:0;color:var(--muted);font-size:14px}
+.footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.footer a,.linkbtn{color:var(--text);text-decoration:none;font-size:14px;background:none;border:0;padding:0;text-align:left}
+.footer a:hover,.linkbtn:hover{color:var(--accent)}
+.copy{margin-top:32px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
 
-/* Таблица */
-.table-wrap{overflow-x:auto;margin:0 -16px;padding:0 16px}
-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
-th,td{padding:10px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:middle}
-th{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
-th .sort{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-transform:inherit;letter-spacing:inherit}
-th .sort:hover{color:var(--text)}
-.c-amt{text-align:right;white-space:nowrap;font-weight:650}
-td.c-amt.income{color:var(--inc)}
-.c-date{white-space:nowrap}
-tbody tr{cursor:pointer}
-tbody tr:hover{background:var(--surface-2)}
-.chip{display:inline-flex;align-items:center;gap:6px}
-.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
-.c-desc{color:var(--muted);max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.c-act{white-space:nowrap;text-align:right;width:1%}
-.c-act button{background:none;border:0;cursor:pointer;padding:6px;border-radius:8px;font-size:15px;color:inherit}
-.c-act button:hover{background:var(--surface)}
-.sub{font-size:12px;color:var(--muted);margin-top:2px}
-.m-only{display:none}
-.table-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
-.table-total{font-weight:600;font-variant-numeric:tabular-nums}
-.empty{text-align:center;color:var(--muted);padding:28px 8px}
-.tabs-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+/* ── Модальные окна и cookie ── */
+dialog{border:0;border-radius:20px;padding:0;max-width:680px;width:calc(100% - 32px);max-height:calc(100dvh - 48px);background:var(--card);color:var(--text);box-shadow:var(--shadow)}
+dialog::backdrop{background:rgba(20,18,19,.55)}
+.dlg{padding:28px;overflow:auto;max-height:calc(100dvh - 48px)}
+.dlg h2{margin:0 0 12px;font-size:26px;letter-spacing:-.02em}
+.dlg h3{font-size:16px;margin:18px 0 6px}
+.dlg p,.dlg li{color:var(--muted);font-size:15px;margin:0 0 8px}
+.dlg ul{padding-left:20px;margin:0 0 8px}
+.dlg .actions{margin-top:20px;text-align:right}
+.cookie{position:fixed;z-index:60;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));max-width:620px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);font-size:14px}
+.cookie[hidden]{display:none}
+.cookie p{margin:0;flex:1;color:var(--muted)}
 
-/* Диалоги */
-dialog{border:1px solid var(--border);border-radius:16px;background:var(--surface);color:var(--text);padding:0;width:min(520px,calc(100vw - 32px));max-height:calc(100vh - 32px);box-shadow:0 20px 60px rgba(0,0,0,.3)}
-dialog::backdrop{background:rgba(10,14,20,.55)}
-#settingsDlg{width:min(760px,calc(100vw - 32px))}
-.dlg{padding:20px;display:grid;gap:14px}
-.dlg h2{margin:0;font-size:19px}
-.dlg h3{margin:0 0 8px;font-size:15px}
-.dlg-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
-.dlg-actions .spacer{flex:1}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.set-sec{border-top:1px solid var(--border);padding-top:14px}
-.clist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.citem{display:flex;align-items:center;gap:8px}
-.citem.is-hidden .cname,.citem.is-hidden .cemoji{opacity:.45}
-.cemoji{width:28px;text-align:center;flex:none}
-.cname{flex:1;min-width:0}
-.cemoji-in{width:52px;flex:none;text-align:center}
-.badge{font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:99px;padding:1px 8px;white-space:nowrap}
-.cadd{display:flex;gap:8px;margin-top:10px}
-.cadd input[name=emoji]{width:52px;flex:none;text-align:center}
-.invite{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.invite code{background:var(--surface-2);padding:6px 10px;border-radius:8px;font-size:14px}
-.members{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:6px}
-.members li{display:flex;align-items:center;gap:8px}
-
-/* Тост и FAB */
-.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:10px;opacity:0;pointer-events:none;transition:.2s;z-index:60;max-width:calc(100vw - 32px);font-size:14px}
-.toast.show{opacity:1;transform:translate(-50%,0)}
-.fab{position:fixed;right:16px;bottom:16px;width:56px;height:56px;border-radius:50%;font-size:28px;line-height:1;display:none;place-items:center;padding:0;box-shadow:0 6px 18px rgba(0,0,0,.25);z-index:30}
-
-@media (max-width:1000px){
-  .add-form{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-  .add-form .type-toggle,.add-form .f-desc,.add-form .btn{grid-column:1/-1}
+/* ── Адаптив ── */
+@media (max-width:980px){
+  .cats{grid-template-columns:repeat(4,1fr)}
+  .row{grid-template-columns:96px minmax(0,1fr) 170px;grid-template-areas:"photo info price" "photo contacts price";row-gap:12px}
 }
-@media (max-width:900px){.two{grid-template-columns:minmax(0,1fr)}}
-@media (max-width:760px){.fab{display:grid}}
-@media (max-width:640px){
-  .summary{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
-  .stat-bal{grid-column:1/-1}
-  .brand-sub{display:none}
-  .who select{max-width:120px}
-  .c-desc,.c-who{display:none}
-  .m-only{display:block}
-  .c-act button{padding:4px}
-  th,td{padding:10px 6px}
-  .grid2{grid-template-columns:1fr}
-  .filter-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+@media (max-width:760px){
+  .steps{grid-template-columns:1fr;gap:12px;margin-top:36px}
+  .fcols{grid-template-columns:1fr;gap:24px}
+  .toolbar{align-items:stretch}
+}
+@media (max-width:600px){
+  .cats{grid-template-columns:repeat(3,1fr);gap:8px}
+  .cat{min-height:100px;font-size:13px}
+  .search-box{height:58px}
+  .search-box .s-ico{display:none}
+  .search-box input{font-size:16px;padding:0 6px 0 14px}
+  .cam-btn{width:42px;height:42px}
+  .find-btn{padding:0 16px;font-size:16px}
+  .row{grid-template-columns:72px minmax(0,1fr);grid-template-areas:"photo info" "photo price" "contacts contacts";gap:10px 14px;padding:16px 12px}
+  .r-photo{width:72px;height:72px}
+  .r-photo .ico{width:34px;height:34px}
+  .r-price{align-items:flex-start;text-align:left}
+  .price{font-size:24px}
+  .r-contacts{border-top:1px dashed var(--line);padding-top:10px}
+  .r-name{font-size:16px}
+  .sec{padding:44px 0}
+  .cookie{flex-direction:column;align-items:stretch;text-align:left}
+  .dlg{padding:22px}
+}
+@media (max-width:430px){
+  .logo .word{display:none}
+  .nav a{padding:8px 9px}
+}
+@media (max-width:380px){
+  .cats{grid-template-columns:repeat(2,1fr)}
+  .find-btn{padding:0 12px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
 }
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="wrap topbar-in">
-    <div class="brand">
-      <span class="logo" aria-hidden="true">₸</span>
-      <div><div class="brand-title" id="familyName">Семья</div><div class="brand-sub">Семейный трекер расходов</div></div>
-    </div>
-    <div class="topbar-actions">
-      <label class="who">
-        <span class="avatar" id="avatar" aria-hidden="true">?</span>
-        <select id="memberSwitch" aria-label="Кто сейчас вносит записи"></select>
-      </label>
-      <button class="btn ghost icon" id="openSettings" aria-label="Настройки семьи" title="Настройки семьи">⚙</button>
-    </div>
+<header class="header">
+  <div class="wrap">
+    <a class="logo" href="#search" aria-label="ДешевлеНайти — на главную">
+      <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><path d="M3 5.5A2.5 2.5 0 0 1 5.5 3h10.2a2.5 2.5 0 0 1 1.8.7l11.3 11.3a2.5 2.5 0 0 1 0 3.5L18.6 28.7a2.5 2.5 0 0 1-3.5 0L3.7 17.5a2.5 2.5 0 0 1-.7-1.8Z" fill="var(--accent)"/><circle cx="10" cy="10" r="2.6" fill="var(--bg)"/></svg>
+      <span class="word">Дешевле<b>Найти</b></span>
+    </a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#search">Поиск</a>
+      <a href="#categories">Категории</a>
+      <a href="#results">Результаты</a>
+    </nav>
   </div>
 </header>
 
-<main class="wrap">
-  <!-- Фильтр периода -->
-  <section class="card filters" aria-label="Фильтры">
-    <div class="seg" role="group" aria-label="Период" id="presets">
-      <button type="button" data-p="month">Этот месяц</button>
-      <button type="button" data-p="prev">Прошлый месяц</button>
-      <button type="button" data-p="3m">3 месяца</button>
-      <button type="button" data-p="year">Этот год</button>
-      <button type="button" data-p="custom">Свой период</button>
-    </div>
-    <div class="filter-row">
-      <label class="field">С<input type="date" id="fFrom"></label>
-      <label class="field">По<input type="date" id="fTo"></label>
-      <label class="field">Категория<select id="fCat"></select></label>
-      <label class="field">Кто<select id="fAuthor"></select></label>
-      <button type="button" class="btn ghost" id="resetFilters">Сбросить фильтры</button>
-    </div>
-    <div class="period-label" id="periodLabel"></div>
-  </section>
+<main>
+  <!-- 1. Поисковик -->
+  <section id="search" class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <h1 id="hero-title">Найдите, где <span>дешевле</span></h1>
+      <p class="lead">Один поиск по маркетплейсам, интернет-магазинам и магазинам-приложениям. Введите название, марку или модель товара — или просто загрузите фото.</p>
 
-  <!-- Остаток бюджета -->
-  <section class="summary" aria-label="Остаток бюджета за период">
-    <div class="card"><div class="stat-label">Доходы</div><div class="stat-val inc" id="sInc">0 ₸</div></div>
-    <div class="card"><div class="stat-label">Расходы</div><div class="stat-val exp" id="sExp">0 ₸</div></div>
-    <div class="card stat-bal" id="balCard">
-      <div class="stat-label">Остаток</div>
-      <div class="stat-val" id="sBal">0 ₸</div>
-      <div class="progress" role="progressbar" aria-label="Доля потраченного дохода" aria-valuemin="0" aria-valuemax="100" id="spentBar"><div id="spentFill"></div></div>
-      <div class="stat-note" id="spentText"></div>
-    </div>
-  </section>
-  <div class="card savings">
-    <span>Всего накоплено:</span><strong id="sCum">0 ₸</strong>
-    <span class="hint" id="cumNote"></span>
-  </div>
+      <form class="search-form" id="searchForm" role="search" autocomplete="off" novalidate>
+        <div class="search-box" id="searchBox">
+          <svg class="ico s-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <label for="q" class="sr-only">Название, марка или модель товара</label>
+          <input id="q" name="q" type="search" enterkeyhint="search" placeholder="Например: iPhone 15 128 ГБ или Samsung"
+                 role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="suggest">
+          <button type="button" class="cam-btn" id="camBtn" aria-label="Найти по фото" title="Найти по фото">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.8l1.4-2h4.6l1.4 2h1.8A2.5 2.5 0 0 1 20 8.5v9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"/><circle cx="12" cy="13" r="3.6"/></svg>
+          </button>
+          <button type="submit" class="find-btn" id="findBtn">Найти</button>
+          <div class="drop-hint" aria-hidden="true">Отпустите, чтобы искать по фото</div>
+        </div>
+        <ul class="suggest" id="suggest" role="listbox" aria-label="Подсказки" hidden></ul>
+        <input type="file" id="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" hidden>
+        <p class="form-msg" id="formMsg" role="alert"></p>
 
-  <!-- Итоги и динамика -->
-  <div class="two">
-    <section class="card" aria-labelledby="totTitle">
-      <div class="card-head"><h2 id="totTitle">Итоги по категориям</h2><span class="hint">клик — фильтр таблицы</span></div>
-      <div class="totals" id="totals"></div>
-      <div class="totals-foot" id="totalsFoot"></div>
-    </section>
-    <section class="card" aria-labelledby="chartTitle">
-      <div class="card-head">
-        <h2 id="chartTitle">Динамика по месяцам</h2>
-        <div class="chart-ctrl">
-          <select id="chartCat" aria-label="Категория для динамики"></select>
-          <div class="seg" role="group" aria-label="Число месяцев" id="chartMonths">
-            <button type="button" data-n="6">6 мес</button><button type="button" data-n="12">12 мес</button>
+        <div class="preview" id="preview" hidden>
+          <div class="thumb" id="thumb"></div>
+          <div class="meta">
+            <div class="fname" id="fname"></div>
+            <div class="status" id="photoStatus" aria-live="polite"></div>
           </div>
+          <button type="button" class="x" id="photoX" aria-label="Убрать фото">✕</button>
         </div>
-      </div>
-      <div class="chart-wrap" id="chartWrap">
-        <div id="chart"></div>
-        <div class="tip" id="tip" role="status" aria-live="polite"></div>
-      </div>
-      <div class="legend" id="legend"></div>
-    </section>
-  </div>
+      </form>
 
-  <!-- Форма добавления -->
-  <section class="card" aria-label="Добавить операцию" id="addCard">
-    <form class="add-form" id="addForm" novalidate>
-      <div class="field type-toggle"><span>Тип</span>
-        <div class="seg" role="group" aria-label="Тип операции" id="typeToggle">
-          <button type="button" data-t="expense">Расход</button><button type="button" data-t="income">Доход</button>
-        </div>
+      <div class="chips-row" id="popular">
+        <span class="lbl">Часто ищут:</span>
       </div>
-      <label class="field">Сумма, ₸<input id="aAmount" inputmode="decimal" autocomplete="off" placeholder="0" required></label>
-      <label class="field"><span id="aCatLabel">Категория</span><select id="aCat" required></select></label>
-      <label class="field f-desc">Описание<input id="aDesc" maxlength="200" autocomplete="off" placeholder="Необязательно"></label>
-      <label class="field">Дата<input type="date" id="aDate" required></label>
-      <button class="btn" type="submit" id="aSubmit">Добавить</button>
-    </form>
-    <div class="form-err" id="aErr" role="alert"></div>
-    <div class="hint">Переводы между членами семьи и между своими счетами не вносите — это не доход и не расход.</div>
+
+      <ol class="steps">
+        <li><b>1</b><div><strong>Введите запрос</strong>Название, марку, модель — или загрузите фото товара.</div></li>
+        <li><b>2</b><div><strong>Мы опрашиваем продавцов</strong>Маркетплейсы, интернет-магазины и магазины-приложения.</div></li>
+        <li><b>3</b><div><strong>Выбирайте выгодное</strong>Список от самой низкой цены, с контактами и сайтом продавца.</div></li>
+      </ol>
+    </div>
   </section>
 
-  <!-- Таблица -->
-  <section class="card" aria-label="Операции">
-    <div class="tabs-row">
-      <div class="seg" role="tablist" aria-label="Тип операций" id="tabs">
-        <button type="button" role="tab" data-tab="expense">Расходы</button>
-        <button type="button" role="tab" data-tab="income">Доходы</button>
-        <button type="button" role="tab" data-tab="all">Все</button>
+  <!-- 2. Категории -->
+  <section id="categories" class="sec" aria-labelledby="cat-title">
+    <div class="wrap">
+      <h2 id="cat-title">Категории товаров</h2>
+      <p class="sub">Не знаете точного названия? Выберите категорию — покажем самые дешёвые предложения.</p>
+      <div class="cats" id="cats"></div>
+      <div class="subpanel" id="subpanel" hidden aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- 3. Результаты -->
+  <section id="results" class="sec" aria-labelledby="res-title">
+    <div class="wrap">
+      <h2 id="res-title">Результаты</h2>
+      <p class="sub">Все найденные предложения — от самой низкой цены к высокой.</p>
+
+      <div class="tags" id="tags" hidden></div>
+      <div class="toolbar" id="toolbar" hidden>
+        <div class="seg" id="seg" role="group" aria-label="Источник">
+          <button type="button" data-src="all" aria-pressed="true">Все</button>
+          <button type="button" data-src="mp" aria-pressed="false">Маркетплейсы</button>
+          <button type="button" data-src="shop" aria-pressed="false">Магазины</button>
+          <button type="button" data-src="app" aria-pressed="false">Приложения</button>
+        </div>
+        <label class="sort">Сортировка
+          <select id="sort">
+            <option value="asc">Сначала дешёвые</option>
+            <option value="desc">Сначала дорогие</option>
+          </select>
+        </label>
       </div>
-      <span class="hint" id="rowCount"></span>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr>
-          <th><button class="sort" data-sort="date" type="button">Дата</button></th>
-          <th class="c-amt"><button class="sort" data-sort="amount" type="button">Сумма</button></th>
-          <th id="thCat">Категория</th>
-          <th class="c-desc">Описание</th>
-          <th class="c-who">Кто</th>
-          <th class="c-act"><span class="sr-only">Действия</span></th>
-        </tr></thead>
-        <tbody id="tbody"></tbody>
-      </table>
-    </div>
-    <div class="table-foot">
-      <button type="button" class="btn ghost" id="moreBtn" hidden>Показать ещё</button>
-      <div class="table-total" id="tableTotal"></div>
+
+      <div aria-live="polite" id="live">
+        <div id="stateBox"></div>
+        <p class="summary" id="summary" hidden></p>
+      </div>
+      <span class="demo-note" id="demoNote" hidden>Сейчас показаны демонстрационные предложения</span>
+      <ul class="list" id="list" hidden></ul>
+      <div class="more-wrap" id="moreWrap" hidden><button type="button" class="btn-ghost" id="moreBtn"></button></div>
+      <p class="disclaimer" id="disclaimer" hidden>Цены и наличие указаны по данным продавцов и могут отличаться на момент покупки. Уточняйте условия у продавца.</p>
     </div>
   </section>
 </main>
 
-<button class="btn fab" id="fab" aria-label="Добавить операцию">+</button>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-<!-- Приветствие / создание семьи -->
-<dialog id="welcomeDlg" aria-labelledby="wTitle">
-  <form class="dlg" id="welcomeForm">
-    <h2 id="wTitle">Семейный трекер расходов</h2>
-    <p class="muted" style="margin:0">Создайте семейное пространство: вы станете его владельцем и сможете добавить остальных участников.</p>
-    <label class="field">Название семьи<input id="wFamily" required maxlength="60" placeholder="Например, Семья Ахметовых"></label>
-    <label class="field">Ваше имя<input id="wName" required maxlength="40" placeholder="Например, Айгерим"></label>
-    <label class="field">Начальный остаток, ₸ (деньги, которые уже есть)<input id="wOpening" inputmode="decimal" placeholder="0"></label>
-    <div class="form-err" id="wErr" role="alert"></div>
-    <div class="dlg-actions">
-      <button type="button" class="btn ghost" id="demoBtn">Открыть с демо-данными</button>
-      <button type="submit" class="btn">Создать семью</button>
+<footer class="footer">
+  <div class="wrap">
+    <div class="fcols">
+      <div>
+        <h4>ДешевлеНайти</h4>
+        <p>Сервис сравнения цен: собираем предложения маркетплейсов, интернет-магазинов и магазинов-приложений и показываем их от самого дешёвого. Мы ничего не продаём — покупка происходит у продавца.</p>
+      </div>
+      <div>
+        <h4>Разделы</h4>
+        <ul>
+          <li><a href="#search">Поиск</a></li>
+          <li><a href="#categories">Категории</a></li>
+          <li><a href="#results">Результаты</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Документы</h4>
+        <ul>
+          <li><button type="button" class="linkbtn" data-open="privacy">Политика конфиденциальности</button></li>
+          <li><button type="button" class="linkbtn" data-open="terms">Пользовательское соглашение</button></li>
+        </ul>
+      </div>
     </div>
-  </form>
-</dialog>
+    <div class="copy">© <span id="year"></span> ДешевлеНайти. Цены и наличие указаны по данным продавцов и могут отличаться на момент покупки.</div>
+  </div>
+</footer>
 
-<!-- Редактирование -->
-<dialog id="editDlg" aria-labelledby="eTitle">
-  <form class="dlg" id="editForm" novalidate>
-    <h2 id="eTitle">Редактировать</h2>
-    <div class="hint" id="eMeta"></div>
-    <div class="grid2">
-      <label class="field">Сумма, ₸<input id="eAmount" inputmode="decimal" required></label>
-      <label class="field">Дата<input type="date" id="eDate" required></label>
-    </div>
-    <label class="field"><span id="eCatLabel">Категория</span><select id="eCat"></select></label>
-    <label class="field">Описание<input id="eDesc" maxlength="200"></label>
-    <div class="form-err" id="eErr" role="alert"></div>
-    <div class="dlg-actions">
-      <button type="button" class="btn link-danger" id="eDelete">Удалить</button>
-      <span class="spacer"></span>
-      <button type="button" class="btn ghost" id="eCancel">Отмена</button>
-      <button type="submit" class="btn">Сохранить</button>
-    </div>
-  </form>
-</dialog>
-
-<!-- Подтверждение -->
-<dialog id="confirmDlg">
-  <form class="dlg" method="dialog">
-    <h2 id="confirmTitle">Вы уверены?</h2>
-    <p id="confirmText" style="margin:0"></p>
-    <div class="dlg-actions">
-      <button value="cancel" class="btn ghost">Отмена</button>
-      <button value="ok" class="btn danger" id="confirmOk">Удалить</button>
-    </div>
-  </form>
-</dialog>
-
-<!-- Настройки -->
-<dialog id="settingsDlg" aria-labelledby="sTitle">
+<dialog id="privacy" aria-labelledby="privacy-title">
   <div class="dlg">
-    <div class="dlg-actions" style="justify-content:space-between"><h2 id="sTitle">Настройки семьи</h2><button class="btn ghost icon" id="closeSettings" aria-label="Закрыть">✕</button></div>
-    <div id="settingsBody" class="dlg" style="padding:0"></div>
+    <h2 id="privacy-title">Политика конфиденциальности</h2>
+    <p>Политика разработана в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных».</p>
+    <h3>Какие данные мы собираем</h3>
+    <ul>
+      <li>поисковые запросы и выбранные категории;</li>
+      <li>фотографии, которые вы загружаете для поиска;</li>
+      <li>технические данные: IP-адрес, тип браузера и устройства, файлы cookie.</li>
+    </ul>
+    <h3>Зачем</h3>
+    <p>Чтобы выполнить поиск, распознать товар на фото, улучшать качество выдачи и вести обезличенную статистику.</p>
+    <h3>Хранение фото</h3>
+    <p>Загруженные фото используются только для распознавания товара и удаляются не позднее 24 часов после обработки. Мы не публикуем их и не передаём третьим лицам, кроме сервиса распознавания.</p>
+    <h3>Cookie</h3>
+    <p>Мы используем cookie для работы сайта и статистики. Их можно отключить в настройках браузера — часть функций может работать хуже.</p>
+    <h3>Контакты продавцов</h3>
+    <p>Названия, телефоны, e-mail и сайты продавцов получены из публично доступных источников: карточек товаров, официальных API и фидов площадок.</p>
+    <h3>Ваши права</h3>
+    <p>Вы можете запросить сведения о ваших данных, их уточнение или удаление, а также отозвать согласие на обработку.</p>
+    <h3>Связь</h3>
+    <p>По вопросам обработки данных пишите на <a href="mailto:support@deshevlenaiti.example">support@deshevlenaiti.example</a>.</p>
+    <div class="actions"><button type="button" class="btn-primary" data-close>Понятно</button></div>
   </div>
 </dialog>
 
+<dialog id="terms" aria-labelledby="terms-title">
+  <div class="dlg">
+    <h2 id="terms-title">Пользовательское соглашение</h2>
+    <h3>1. Что такое сервис</h3>
+    <p>ДешевлеНайти — информационный сервис сравнения цен. Сервис не продаёт товары и не является стороной сделки между вами и продавцом.</p>
+    <h3>2. Цены и наличие</h3>
+    <p>Информация о ценах, наличии и продавцах получена от площадок и продавцов и может меняться. Перед покупкой уточняйте условия у продавца.</p>
+    <h3>3. Использование</h3>
+    <p>Пользуясь сайтом, вы соглашаетесь не создавать чрезмерную автоматическую нагрузку, не загружать фото с чужими персональными данными и материалами, нарушающими закон.</p>
+    <h3>4. Ответственность</h3>
+    <p>Сервис не отвечает за качество товаров, действия продавцов и расхождение цен. Претензии по покупке направляются продавцу.</p>
+    <h3>5. Изменения</h3>
+    <p>Мы можем обновлять соглашение; актуальная версия всегда доступна на этой странице.</p>
+    <div class="actions"><button type="button" class="btn-primary" data-close>Понятно</button></div>
+  </div>
+</dialog>
+
+<div class="cookie" id="cookie" hidden role="region" aria-label="Уведомление о cookie">
+  <p>Мы используем cookie, чтобы сайт работал корректно. <button type="button" class="linkbtn" data-open="privacy" style="color:var(--accent);font-weight:600">Подробнее</button></p>
+  <button type="button" class="btn-primary" id="cookieOk">Хорошо</button>
+</div>
+
 <script>
-(function(){
-'use strict';
+/* ───────────────────────── Настройки ─────────────────────────
+   Чтобы подключить реальные данные (PRD, раздел 11), укажите адреса:
+   searchEndpoint:    GET  /api/search    — вместо встроенных демо-предложений
+   recognizeEndpoint: POST /api/recognize — распознавание фото ИИ-моделью
+   Пока они null, работает демо-режим. */
+const CONFIG = { searchEndpoint: null, recognizeEndpoint: null, pageSize: 20 };
 
-const LS_KEY = 'family-budget-v1';
-const DEFAULT_EXP = [['Продукты','🛒','#3fa36b'],['Кафе и рестораны','☕','#e0874f'],['Транспорт','🚌','#4a8bd6'],['Жильё и ЖКУ','🏠','#8a68c7'],['Связь и интернет','📶','#22a9b6'],['Здоровье','💊','#dd5566'],['Одежда','👕','#c39a1d'],['Дети','🧸','#e77fa8'],['Развлечения','🎬','#6676de'],['Подарки','🎁','#c96d36'],['Подписки','🔁','#7a8796'],['Прочее','📦','#9aa0a6']];
-const DEFAULT_INC = [['Зарплата','💼','#1a9b62'],['Подработка','🛠','#3d8fe0'],['Пособия и выплаты','🏛','#8a68c7'],['Проценты и кэшбэк','💳','#c39a1d'],['Подарки','🎁','#c96d36'],['Прочее','📦','#9aa0a6']];
-const MONTHS = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
-const MONTHS_SHORT = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
-const PAGE = 50;
+/* ───────────────────────── Иконки ───────────────────────── */
+const ICONS = {
+  electronics:'<rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/>',
+  appliances:'<rect x="4" y="2.5" width="16" height="19" rx="2.5"/><circle cx="12" cy="13.5" r="4.5"/><path d="M7.5 6h.01M10.5 6h3"/>',
+  clothes:'<path d="M8 3 4 5.5 2.5 10l3 1.2V21h13v-9.8l3-1.2L20 5.5 16 3c-.6 1.6-2.2 2.6-4 2.6S8.6 4.6 8 3Z"/>',
+  home:'<path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9v11.5h13V9"/><path d="M10 20.5v-6h4v6"/>',
+  beauty:'<path d="M9 2.5h6v4H9z"/><path d="M8 6.5h8l1 3v10.5a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 7 20V9.5z"/><path d="M10 13h4"/>',
+  kids:'<path d="M3 4h2.2l2.3 9h10.3"/><path d="M7.5 13 6 6.5h14a6.5 6.5 0 0 1-6.5 6.5"/><circle cx="9" cy="19" r="2"/><circle cx="17" cy="19" r="2"/>',
+  food:'<path d="M4 9h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 2.5c-.8 1 .8 2 0 3.5M12 2.5c-.8 1 .8 2 0 3.5"/>',
+  sport:'<path d="M6.5 6.5v11M17.5 6.5v11M3.5 9v6M20.5 9v6M6.5 12h11"/>',
+  auto:'<path d="M5 11l1.6-4.2A2 2 0 0 1 8.5 5.5h7a2 2 0 0 1 1.9 1.3L19 11"/><rect x="3" y="11" width="18" height="6" rx="2"/><circle cx="7.5" cy="14" r="1"/><circle cx="16.5" cy="14" r="1"/><path d="M6 17v2.5M18 17v2.5"/>',
+  build:'<path d="M14 7.5 3.5 18a2.1 2.1 0 0 0 3 3L17 10.5"/><path d="M12.5 6l3.5-3.5 5.5 5.5L18 11.5z"/>',
+  books:'<path d="M12 6.5C10 5 7 4.5 3 5v14c4-.5 7 0 9 1.5 2-1.5 5-2 9-1.5V5c-4-.5-7 0-9 1.5z"/><path d="M12 6.5v14"/>',
+  pets:'<circle cx="6.5" cy="10" r="1.8"/><circle cx="10" cy="5.8" r="1.8"/><circle cx="14.5" cy="5.8" r="1.8"/><circle cx="18" cy="10" r="1.8"/><path d="M8 18.3c0-3 2-5.8 4.3-5.8s4.2 2.8 4.2 5.4c0 1.8-1.5 2.8-3.1 2.4-.9-.2-1.4-.5-2.3-.3-1.5.3-3.1.3-3.1-1.7z"/>'
+};
+const icon = (id, cls = 'ico') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[id]}</svg>`;
 
-const $ = s => document.querySelector(s);
-const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const pad = n => String(n).padStart(2,'0');
-const ymd = d => d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
-const today = () => ymd(new Date());
-const fmtDate = s => { const [y,m,d] = s.split('-'); return d+'.'+m+'.'+y; };
-const uid = () => Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);
-const nf0 = new Intl.NumberFormat('ru-RU',{maximumFractionDigits:0});
-const nf2 = new Intl.NumberFormat('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2});
+/* ───────────────────────── Категории ───────────────────────── */
+const CATS = [
+  {id:'electronics', name:'Электроника', subs:['Смартфоны','Ноутбуки','Наушники','Телевизоры','Умные часы']},
+  {id:'appliances', name:'Бытовая техника', subs:['Стиральные машины','Пылесосы','Холодильники','Кофемашины','Чайники']},
+  {id:'clothes', name:'Одежда и обувь', subs:['Кроссовки','Куртки','Джинсы']},
+  {id:'home', name:'Дом и сад', subs:['Посуда','Текстиль','Освещение']},
+  {id:'beauty', name:'Красота и здоровье', subs:['Уход за волосами','Электрические щётки','Парфюмерия']},
+  {id:'kids', name:'Детские товары', subs:['Конструкторы','Подгузники','Коляски']},
+  {id:'food', name:'Продукты', subs:['Кофе и чай','Масло и соусы']},
+  {id:'sport', name:'Спорт и отдых', subs:['Велосипеды','Фитнес','Туризм']},
+  {id:'auto', name:'Авто', subs:['Шины','Видеорегистраторы']},
+  {id:'build', name:'Строительство и ремонт', subs:['Электроинструмент','Краски']},
+  {id:'books', name:'Книги и канцтовары', subs:['Книги','Канцтовары']},
+  {id:'pets', name:'Зоотовары', subs:['Корм для кошек','Корм для собак']}
+];
+const catById = id => CATS.find(c => c.id === id);
 
-function money(v, signed){
-  const cents = Math.round(v*100), a = Math.abs(cents);
-  const s = (a % 100 ? nf2 : nf0).format(a/100);
-  let sign = cents < 0 ? '−' : '';
-  if (signed && cents > 0) sign = '+';
-  return sign + s + ' ₸';
-}
-function fmtShort(v){
-  const a = Math.abs(v), s = v < 0 ? '−' : '';
-  if (a >= 1e6) return s + (a/1e6).toLocaleString('ru-RU',{maximumFractionDigits:1}) + ' млн';
-  if (a >= 1e3) return s + Math.round(a/1e3) + ' тыс';
-  return s + Math.round(a);
-}
-function parseAmount(raw, allowZero){
-  const s = String(raw).replace(/[\s ]/g,'').replace(',','.');
-  if (!/^\d+(\.\d{1,2})?$/.test(s)) return null;
-  const v = parseFloat(s);
-  if (v > 1e11) return null;
-  return (v > 0 || (allowZero && v === 0)) ? v : null;
-}
-const amountToInput = v => String(v).replace('.',',');
-const inviteCode = () => 'FAM-' + Math.random().toString(36).slice(2,8).toUpperCase();
+/* ───────────────────────── Демо-данные ─────────────────────────
+   13 вымышленных продавцов (домены .example) и ~47 товаров. */
+const SELLERS = [
+  {name:'ТехноПорт', type:'mp', place:'Ozon', phone:'+7 (900) 101-22-31', email:'sale@tehnoport.example', site:'https://tehnoport.example'},
+  {name:'МегаТочка', type:'mp', place:'Wildberries', phone:'+7 (900) 202-14-55', email:'info@megatochka.example', site:'https://megatochka.example'},
+  {name:'Домовой', type:'mp', place:'Яндекс Маркет', phone:'+7 (900) 303-40-12', email:null, site:'https://domovoy.example'},
+  {name:'GlobalDeal', type:'mp', place:'AliExpress', phone:null, email:'support@globaldeal.example', site:'https://globaldeal.example', cats:['electronics','appliances','clothes','home','sport','auto','build','beauty']},
+  {name:'ЛавкаПлюс', type:'mp', place:'Мегамаркет', phone:'+7 (900) 505-77-08', email:'hello@lavkaplus.example', site:'https://lavkaplus.example'},
+  {name:'Частный продавец Игорь', type:'mp', place:'Avito', phone:'+7 (900) 606-31-90', email:null, site:null, cats:['electronics','clothes','sport','kids']},
+  {name:'Электрон', type:'shop', phone:'+7 (800) 700-10-20', email:'shop@elektron.example', site:'https://elektron.example', cats:['electronics','appliances']},
+  {name:'Хозяюшка', type:'shop', phone:'+7 (800) 700-30-40', email:'zakaz@hozyayushka.example', site:'https://hozyayushka.example', cats:['home','appliances','food']},
+  {name:'Пульс Спорт', type:'shop', phone:'+7 (800) 700-50-60', email:'order@pulsesport.example', site:'https://pulsesport.example', cats:['sport','clothes','auto','build']},
+  {name:'Книжный двор', type:'shop', phone:'+7 (800) 700-70-80', email:'books@knizhdvor.example', site:'https://knizhdvor.example', cats:['books']},
+  {name:'Кроха', type:'app', place:'Кроха', phone:'+7 (800) 555-01-01', email:'help@kroha.example', site:'https://kroha.example', cats:['kids']},
+  {name:'Быстрокорзина', type:'app', place:'Быстрокорзина', phone:'+7 (800) 555-02-02', email:null, site:null, cats:['food','home','beauty','pets','kids']},
+  {name:'ЗооДруг', type:'app', place:'ЗооДруг', phone:'+7 (800) 555-03-03', email:'care@zoodrug.example', site:null, cats:['pets']}
+];
 
-/* ---------- Данные ---------- */
-const mkCats = list => list.map(([name,emoji,color]) => ({id:uid(),name,emoji,color,isDefault:true,isHidden:false}));
+// [категория, подкатегория, марка, модель, наименование, базовая цена]
+const PRODUCTS = [
+  ['electronics','Смартфоны','Apple','iPhone 15','Смартфон Apple iPhone 15 128 ГБ, чёрный',69990],
+  ['electronics','Смартфоны','Apple','iPhone 15 Pro','Смартфон Apple iPhone 15 Pro 256 ГБ, титан',109990],
+  ['electronics','Смартфоны','Samsung','Galaxy S24','Смартфон Samsung Galaxy S24 8/256 ГБ, серый',74990],
+  ['electronics','Смартфоны','Samsung','Galaxy A55','Смартфон Samsung Galaxy A55 8/128 ГБ, синий',36990],
+  ['electronics','Смартфоны','Xiaomi','Redmi Note 13','Смартфон Xiaomi Redmi Note 13 8/256 ГБ',21990],
+  ['electronics','Ноутбуки','Apple','MacBook Air 13 M2','Ноутбук Apple MacBook Air 13 M2 8/256 ГБ',99990],
+  ['electronics','Ноутбуки','Huawei','MateBook D 16','Ноутбук Huawei MateBook D 16 i5/16/512 ГБ',59990],
+  ['electronics','Наушники','Apple','AirPods Pro 2','Наушники Apple AirPods Pro 2 USB-C',22990],
+  ['electronics','Наушники','Sony','WH-1000XM5','Наушники Sony WH-1000XM5 беспроводные',32990],
+  ['electronics','Телевизоры','Samsung','UE55CU7100','Телевизор Samsung UE55CU7100 55" 4K',45990],
+  ['electronics','Телевизоры','Xiaomi','TV A 43','Телевизор Xiaomi TV A 43" 2025',22990],
+  ['electronics','Умные часы','Apple','Watch Series 9','Умные часы Apple Watch Series 9 41 мм',37990],
+  ['electronics','Умные часы','Samsung','Galaxy Watch 6','Умные часы Samsung Galaxy Watch 6 44 мм',24990],
+  ['appliances','Пылесосы','Dyson','V15 Detect','Пылесос беспроводной Dyson V15 Detect Absolute',64990],
+  ['appliances','Пылесосы','Xiaomi','Robot Vacuum S10','Робот-пылесос Xiaomi Robot Vacuum S10',19990],
+  ['appliances','Стиральные машины','Bosch','Serie 4 WAN28','Стиральная машина Bosch Serie 4 WAN28 8 кг',54990],
+  ['appliances','Холодильники','LG','GA-B509','Холодильник LG GA-B509 No Frost',62990],
+  ['appliances','Кофемашины',"De'Longhi",'Magnifica S ECAM 22.110','Кофемашина De\'Longhi Magnifica S ECAM 22.110',39990],
+  ['appliances','Чайники','Xiaomi','Electric Kettle 2','Чайник электрический Xiaomi Mi Electric Kettle 2',2990],
+  ['clothes','Кроссовки','Nike','Air Force 1',"Кроссовки Nike Air Force 1 '07, белые",11990],
+  ['clothes','Кроссовки','Adidas','Samba OG','Кроссовки Adidas Samba OG',12990],
+  ['clothes','Куртки','The North Face','Nuptse','Пуховик The North Face 1996 Retro Nuptse',34990],
+  ['clothes','Джинсы',"Levi's",'501 Original',"Джинсы Levi's 501 Original",8990],
+  ['home','Посуда','Tefal','Unlimited 28','Сковорода Tefal Unlimited 28 см',3490],
+  ['home','Текстиль','Togas','Комплект 2-сп','Комплект постельного белья Togas, 2-спальный, сатин',6990],
+  ['home','Освещение','Xiaomi','LED Desk Lamp 1S','Настольная лампа Xiaomi Mi LED Desk Lamp 1S',3990],
+  ['beauty','Уход за волосами','Dyson','Supersonic HD07','Фен Dyson Supersonic HD07',44990],
+  ['beauty','Электрические щётки','Oral-B','iO 7','Электрическая зубная щётка Oral-B iO 7',14990],
+  ['beauty','Парфюмерия','Lacoste','L.12.12 Blanc','Туалетная вода Lacoste L.12.12 Blanc 100 мл',7990],
+  ['kids','Конструкторы','LEGO','City 60316','Конструктор LEGO City Полицейский участок 60316',7990],
+  ['kids','Подгузники','Pampers','Premium Care 3','Подгузники Pampers Premium Care 3 (6–10 кг), 74 шт.',2390],
+  ['kids','Коляски','Happy Baby','Mommer','Коляска прогулочная Happy Baby Mommer',21990],
+  ['food','Кофе и чай','Lavazza','Qualità Oro','Кофе в зёрнах Lavazza Qualità Oro 1 кг',2190],
+  ['food','Кофе и чай','Greenfield','Earl Grey Fantasy','Чай чёрный Greenfield Earl Grey Fantasy, 100 пакетиков',399],
+  ['food','Масло и соусы','Borges','Extra Virgin','Масло оливковое Borges Extra Virgin 1 л',1290],
+  ['sport','Велосипеды','Stels','Navigator 500','Велосипед горный Stels Navigator 500 26"',18990],
+  ['sport','Фитнес','Starfit','DB-702','Гантели разборные Starfit DB-702, 2×10 кг',3990],
+  ['sport','Туризм','Tramp','Lite Camp 3','Палатка туристическая Tramp Lite Camp 3',7990],
+  ['auto','Шины','Michelin','X-Ice North 4','Шина зимняя Michelin X-Ice North 4 205/55 R16',9490],
+  ['auto','Видеорегистраторы','70mai','Dash Cam A500S','Видеорегистратор 70mai Dash Cam A500S',7490],
+  ['build','Электроинструмент','Makita','DF333DWYE','Дрель-шуруповёрт аккумуляторная Makita DF333DWYE',9990],
+  ['build','Краски','Tikkurila','Euro Power 7','Краска интерьерная Tikkurila Euro Power 7, 2,7 л',3290],
+  ['books','Книги','Азбука','Мастер и Маргарита','Книга «Мастер и Маргарита», М. А. Булгаков',590],
+  ['books','Канцтовары','Pilot','G-2','Набор гелевых ручек Pilot G-2, 4 шт.',690],
+  ['pets','Корм для кошек','Royal Canin','Sterilised 37','Сухой корм для кошек Royal Canin Sterilised 37, 2 кг',2590],
+  ['pets','Корм для собак','Purina Pro Plan','Medium Adult','Сухой корм для собак Purina Pro Plan Medium Adult, 3 кг',3490]
+].map(([cat,sub,brand,model,name,base],i)=>({i,cat,sub,brand,model,name,base}));
 
-function newState(family, me, opening){
-  const ownerId = uid();
-  return {
-    v:1,
-    family:{name:family, openingBalance:opening||0, inviteCode:inviteCode()},
-    members:[{id:ownerId, name:me, role:'owner'}],
-    currentMemberId:ownerId,
-    cats:{expense:mkCats(DEFAULT_EXP), income:mkCats(DEFAULT_INC)},
-    ops:[]
-  };
-}
+function rng(seed){return()=>{seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const roundPrice = p => p < 1000 ? Math.round(p/10)*10 - 1 : Math.round(p/100)*100 - 10;
 
-function demoState(){
-  const s = newState('Наша семья','Айгерим',250000);
-  const erlan = {id:uid(), name:'Ерлан', role:'member'};
-  s.members.push(erlan);
-  const A = s.currentMemberId, E = erlan.id;
-  let seed = 20261007;
-  const rnd = () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
-  const R = (a,b) => a + Math.floor(rnd()*(b-a+1));
-  const pick = arr => arr[Math.floor(rnd()*arr.length)];
-  const cid = (type,name) => s.cats[type].find(c => c.name === name).id;
-  const now = new Date();
-  let t0 = Date.now() - 400*864e5;
-  for (let k = 11; k >= 0; k--){
-    const d0 = new Date(now.getFullYear(), now.getMonth()-k, 1);
-    const y = d0.getFullYear(), m = d0.getMonth();
-    const dim = new Date(y, m+1, 0).getDate();
-    const last = k === 0 ? now.getDate() : dim;
-    const add = (type, cat, amount, day, desc, by) => {
-      if (day > last) return;
-      s.ops.push({id:uid(), type, amount, catId:cid(type,cat), desc:desc||'', date:ymd(new Date(y,m,day)), by:by||pick([A,E]), createdAt:t0 += 1000});
-    };
-    const r10 = (a,b) => Math.round(R(a,b)/10)*10;
-    // Доходы
-    add('income','Зарплата',380000,5,'Зарплата',A);
-    add('income','Зарплата',320000,10,'Зарплата',E);
-    if (rnd() < .5) add('income','Подработка',r10(40000,90000),R(14,24),'Проект на фрилансе',E);
-    add('income','Проценты и кэшбэк',R(2500,9000)+.5,28,'Кэшбэк по карте',A);
-    if (m === 2 || m === 11) add('income','Подарки',r10(30000,60000),R(1,20),'Подарок от родителей',A);
-    // Расходы
-    add('expense','Жильё и ЖКУ',150000,3,'Ипотека',A);
-    add('expense','Жильё и ЖКУ',(m<3||m>9) ? r10(38000,46000) : r10(24000,32000),15,'Коммунальные услуги',A);
-    add('expense','Связь и интернет',12990,7,'Мобильная связь и интернет',E);
-    add('expense','Подписки',4990,12,'Музыка и кино',A);
-    for (let i = R(9,12); i--;) add('expense','Продукты',r10(6000,26000),R(1,dim),pick(['Magnum','Small','Рынок','Продукты на неделю','Хлеб, молоко','']));
-    for (let i = R(3,6); i--;) add('expense','Кафе и рестораны',r10(4000,18000),R(1,dim),pick(['Обед','Кофе','Ужин всей семьёй','Доставка']));
-    for (let i = R(6,10); i--;) add('expense','Транспорт',r10(1500,12000),R(1,dim),pick(['Такси','Бензин','Проезд','Парковка']));
-    for (let i = R(1,2); i--;) add('expense','Здоровье',r10(3000,25000),R(1,dim),pick(['Аптека','Анализы','Стоматолог']));
-    for (let i = R(2,3); i--;) add('expense','Дети',r10(5000,30000),R(1,dim),pick(['Кружок','Школьные принадлежности','Игрушки']));
-    if (rnd() < .5) add('expense','Одежда',r10(15000,60000),R(1,dim),pick(['Обувь','Куртка','Одежда детям']));
-    for (let i = R(1,3); i--;) add('expense','Развлечения',r10(5000,20000),R(1,dim),pick(['Кино','Боулинг','Аквапарк']));
-    if (rnd() < .3) add('expense','Подарки',r10(10000,40000),R(1,dim),'День рождения');
-    for (let i = R(1,2); i--;) add('expense','Прочее',r10(2000,10000),R(1,dim),pick(['Хозтовары','Ремонт мелочей','']));
-    if (k === 4) add('expense','Развлечения',420000,R(8,20),'Отпуск',A);
-  }
-  return s;
-}
-
-let state = null;
-function load(){
-  try { const s = JSON.parse(localStorage.getItem(LS_KEY)); if (s && s.v === 1 && Array.isArray(s.ops)) return s; } catch(e){}
-  return null;
-}
-function save(){ try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e){} }
-
-/* ---------- Состояние интерфейса ---------- */
-const ui = {period:'month', from:'', to:'', cat:'', author:'', tab:'expense', sortKey:'date', sortDir:-1, limit:PAGE, chartMonths:12, chartCat:'', formType:'expense'};
-
-function periodRange(){
-  const n = new Date(), y = n.getFullYear(), m = n.getMonth();
-  const r = (a,b) => ({from:ymd(a), to:ymd(b)});
-  switch (ui.period){
-    case 'prev': return r(new Date(y,m-1,1), new Date(y,m,0));
-    case '3m':   return r(new Date(y,m-2,1), new Date(y,m+1,0));
-    case 'year': return r(new Date(y,0,1), new Date(y,11,31));
-    case 'custom': {
-      let f = ui.from || ymd(new Date(y,m,1)), t = ui.to || ymd(new Date(y,m+1,0));
-      if (f > t) [f,t] = [t,f];
-      return {from:f, to:t};
+const DEMO_OFFERS = (() => {
+  const R = rng(20261008), now = Date.now(), out = [];
+  for (const p of PRODUCTS) {
+    const pool = SELLERS.filter(s => !s.cats || s.cats.includes(p.cat)).sort(() => R() - .5);
+    const k = Math.min(pool.length, 3 + Math.floor(R()*4));
+    for (const s of pool.slice(0, k)) {
+      const price = roundPrice(p.base * (0.86 + R()*0.26));
+      const oldPrice = R() < 0.4 ? roundPrice(price * (1.08 + R()*0.17)) : null;
+      out.push({
+        id:`${p.i}-${s.name}`, name:p.name, brand:p.brand, model:p.model, cat:p.cat, sub:p.sub,
+        price, oldPrice, photo: R() < 0.15 ? null : 'icon',
+        updatedAt: now - Math.floor(R()*7)*3600e3 - Math.floor(R()*1800e3),
+        source:{type:s.type, place:s.place || null},
+        seller:{name:s.name, phone:s.phone, email:s.email, site:s.site}
+      });
     }
-    default: return r(new Date(y,m,1), new Date(y,m+1,0));
   }
-}
-const inRange = (o,r) => o.date >= r.from && o.date <= r.to;
-const catOf = (type,id) => state.cats[type].find(c => c.id === id) || {name:'—', emoji:'❔', color:'#999'};
-const memberName = id => (state.members.find(m => m.id === id) || {name:'—'}).name;
-const sum = list => list.reduce((a,o) => a + o.amount, 0);
-const parseKey = k => { const i = k.indexOf(':'); return {type:k.slice(0,i), id:k.slice(i+1)}; };
+  return out;
+})();
 
-/* ---------- Рендер ---------- */
-function render(){
-  if (!state) return;
-  renderHeader(); renderFilters(); renderSummary(); renderTotals(); renderChart(); renderForm(); renderTable();
-}
+/* ───────────────────────── Нормализация и поиск ───────────────────────── */
+// Русское написание марок и моделей → латиница; синонимы. Словарь расширяемый.
+const SYN = {
+  'айфон':'iphone','айфоны':'iphone','эпл':'apple','эппл':'apple','апл':'apple','макбук':'macbook','аирподс':'airpods','эйрподс':'airpods',
+  'самсунг':'samsung','самсунк':'samsung','галакси':'galaxy','галэкси':'galaxy',
+  'сяоми':'xiaomi','ксиоми':'xiaomi','ксяоми':'xiaomi','шаоми':'xiaomi','редми':'redmi','хуавей':'huawei','хуавэй':'huawei',
+  'сони':'sony','бош':'bosch','элджи':'lg','лджи':'lg','делонги':'delonghi','делонжи':'delonghi',
+  'дайсон':'dyson','найк':'nike','найки':'nike','адидас':'adidas','левайс':'levis','левис':'levis','норт':'north','фейс':'face',
+  'тефаль':'tefal','орал':'oral','лакост':'lacoste','лего':'lego','памперс':'pampers',
+  'лавацца':'lavazza','гринфилд':'greenfield','борхес':'borges','стелс':'stels','трамп':'tramp','мишлен':'michelin',
+  'макита':'makita','тиккурила':'tikkurila','пилот':'pilot','роял':'royal','канин':'canin','пурина':'purina',
+  'про':'pro','макс':'max','эйр':'air','телефон':'смартфон','телефоны':'смартфон','ноут':'ноутбук','телик':'телевизор',
+  'gb':'гб','tb':'тб','mm':'мм','kg':'кг','ml':'мл'
+};
+const SYN_KEYS = Object.keys(SYN).sort((a,b)=>b.length-a.length);
+const ENDINGS = ['ами','ями','ого','его','ому','ему','ыми','ими','иях','ах','ях','ов','ев','ей','ам','ям','ой','ий','ый','ая','яя','ое','ее','ые','ие','ую','юю','ом','ем','а','я','ы','и','у','ю','е','о','ь'];
 
-function renderHeader(){
-  $('#familyName').textContent = state.family.name;
-  document.title = state.family.name + ' · Семейный бюджет';
-  $('#memberSwitch').innerHTML = state.members.map(m => `<option value="${m.id}">${esc(m.name)}${m.role==='owner'?' (владелец)':''}</option>`).join('');
-  $('#memberSwitch').value = state.currentMemberId;
-  $('#avatar').textContent = (memberName(state.currentMemberId)[0] || '?').toUpperCase();
+function normalize(s){
+  return String(s).toLowerCase().replace(/ё/g,'е')
+    .replace(/['"«»`’‘ʼ]/g,'')
+    .replace(/(\d)\s*(гб|gb|тб|tb|мм|mm|кг|kg|мл|ml|л)(?![a-zа-я])/g,'$1 $2')
+    .replace(/[^a-zа-я0-9]+/g,' ').trim();
 }
-
-function catOptions(type, onlyVisible, selected){
-  return state.cats[type].filter(c => !onlyVisible || !c.isHidden || c.id === selected)
-    .map(c => `<option value="${c.id}">${c.emoji} ${esc(c.name)}</option>`).join('');
+function synToken(t){
+  if (SYN[t]) return SYN[t];
+  for (const k of SYN_KEYS) if (/[а-я]/.test(k) && k.length >= 4 && t.startsWith(k) && t.length - k.length <= 2) return SYN[k];
+  return t;
 }
-
-function renderFilters(){
-  const r = periodRange();
-  document.querySelectorAll('#presets button').forEach(b => b.setAttribute('aria-pressed', b.dataset.p === ui.period));
-  $('#fFrom').value = r.from; $('#fTo').value = r.to;
-  const grp = (type,label) => `<optgroup label="${label}">` + state.cats[type].map(c => `<option value="${type}:${c.id}">${c.emoji} ${esc(c.name)}</option>`).join('') + '</optgroup>';
-  $('#fCat').innerHTML = '<option value="">Все категории</option>' + grp('expense','Расходы') + grp('income','Доходы');
-  $('#fCat').value = ui.cat;
-  $('#fAuthor').innerHTML = '<option value="">Все участники</option>' + state.members.map(m => `<option value="${m.id}">${esc(m.name)}</option>`).join('');
-  $('#fAuthor').value = ui.author;
-  $('#periodLabel').textContent = 'Период: ' + fmtDate(r.from) + ' — ' + fmtDate(r.to);
+const tokenize = s => normalize(s).split(' ').filter(Boolean);
+const queryTokens = s => tokenize(s).flatMap(t => synToken(t).split(' '));
+function stem(t){
+  if (!/^[а-я]+$/.test(t) || t.length < 5) return t;
+  for (const e of ENDINGS) if (t.endsWith(e) && t.length - e.length >= 4) return t.slice(0, -e.length);
+  return t;
 }
-
-function renderSummary(){
-  const r = periodRange();
-  const list = state.ops.filter(o => inRange(o,r));
-  const inc = sum(list.filter(o => o.type === 'income'));
-  const exp = sum(list.filter(o => o.type === 'expense'));
-  const bal = inc - exp;
-  $('#sInc').textContent = money(inc);
-  $('#sExp').textContent = money(exp);
-  $('#sBal').textContent = money(bal, true);
-  const card = $('#balCard');
-  card.classList.toggle('pos', Math.round(bal*100) > 0);
-  card.classList.toggle('neg', Math.round(bal*100) < 0);
-  const pct = inc > 0 ? exp/inc*100 : (exp > 0 ? 100 : 0);
-  $('#spentFill').style.width = Math.min(100,pct) + '%';
-  $('#spentBar').setAttribute('aria-valuenow', Math.round(Math.min(100,pct)));
-  $('#spentText').textContent = inc > 0 ? `Потрачено ${Math.round(pct)}% дохода` + (bal < 0 ? ' — расходы превысили доходы' : '')
-    : exp > 0 ? 'Доходов за период нет' : 'Операций за период нет';
-  const all = state.ops;
-  const cum = state.family.openingBalance + sum(all.filter(o => o.type === 'income')) - sum(all.filter(o => o.type === 'expense'));
-  const cumEl = $('#sCum');
-  cumEl.textContent = money(cum);
-  cumEl.style.color = cum < 0 ? 'var(--exp)' : '';
-  $('#cumNote').textContent = 'с начала учёта, включая начальный остаток ' + money(state.family.openingBalance) + '; не зависит от периода';
+function tokenMatches(q, ptoks){
+  if (/^\d+$/.test(q)) return ptoks.includes(q);
+  const s = stem(q);
+  return ptoks.some(p => p.startsWith(s));
+}
+const PTOKS = new Map();
+function offerTokens(o){
+  const key = o.name + '|' + o.cat + '|' + o.sub;
+  if (!PTOKS.has(key)) PTOKS.set(key, tokenize([o.name, o.brand, o.model, o.sub, catById(o.cat)?.name].join(' ')).map(t => SYN[t] && /^[a-z]+$/.test(t) ? SYN[t] : t));
+  return PTOKS.get(key);
+}
+function localSearch(q, cat, sub){
+  const qt = queryTokens(q);
+  return DEMO_OFFERS.filter(o =>
+    (!cat || o.cat === cat) && (!sub || o.sub === sub) &&
+    qt.every(t => tokenMatches(t, offerTokens(o))));
 }
 
-function renderTotals(){
-  const type = ui.tab === 'income' ? 'income' : 'expense';
-  $('#totTitle').textContent = type === 'income' ? 'Итоги по источникам' : 'Итоги по категориям';
-  const r = periodRange();
-  const list = state.ops.filter(o => o.type === type && inRange(o,r) && (!ui.author || o.by === ui.author));
-  const total = sum(list);
-  const by = new Map();
-  list.forEach(o => by.set(o.catId, (by.get(o.catId) || 0) + o.amount));
-  const rows = [...by.entries()].sort((a,b) => b[1] - a[1]);
-  if (!rows.length){
-    $('#totals').innerHTML = `<div class="empty">${type === 'income' ? 'Доходов' : 'Расходов'} за период нет</div>`;
-    $('#totalsFoot').innerHTML = '';
+// Подсказки: марки и «марка + модель» из каталога
+const SUGG = (() => {
+  const set = new Map();
+  for (const p of PRODUCTS) {
+    set.set(p.brand, {text:p.brand, kind:'марка', cat:p.cat});
+    const bm = `${p.brand} ${p.model}`;
+    set.set(bm, {text:bm, kind:catById(p.cat).name, cat:p.cat});
+  }
+  return [...set.values()].map(s => ({...s, toks: tokenize(s.text)}));
+})();
+function suggestFor(input){
+  const raw = tokenize(input);
+  if (!raw.length || normalize(input).length < 2) return [];
+  const qt = raw.flatMap(t => {
+    let v = synToken(t);
+    if (v === t && /^[а-я]{2,}$/.test(t)) { const k = SYN_KEYS.find(k => k.startsWith(t) && /^[a-z]/.test(SYN[k])); if (k) v = SYN[k]; }
+    return v.split(' ');
+  });
+  return SUGG.filter(s => qt.every(t => s.toks.some(x => x.startsWith(t))))
+    .sort((a,b) => (a.kind === 'марка' ? 0 : 1) - (b.kind === 'марка' ? 0 : 1) || a.text.length - b.text.length)
+    .slice(0, 7);
+}
+
+/* ───────────────────────── Источник данных ───────────────────────── */
+const delay = (ms, signal) => new Promise((res, rej) => {
+  const t = setTimeout(res, ms);
+  signal?.addEventListener('abort', () => { clearTimeout(t); rej(new DOMException('Aborted','AbortError')); });
+});
+
+async function fetchOffers(q, cat, sub){
+  if (!CONFIG.searchEndpoint) {
+    await delay(700 + Math.random()*600);
+    return localSearch(q, cat, sub);
+  }
+  const p = new URLSearchParams({q, src:'all', sort:'asc', offset:0, limit:500});
+  if (cat) p.set('cat', cat);
+  if (sub) p.set('sub', sub);
+  const res = await fetch(`${CONFIG.searchEndpoint}?${p}`);
+  if (!res.ok) throw new Error('search_failed');
+  const data = await res.json();
+  return (data.items || []).map(it => ({
+    id:it.id, name:it.name, brand:it.brand, model:it.model, cat:it.category, sub:it.subcategory,
+    price:it.price, oldPrice:it.oldPrice || null, photo:it.photo || null,
+    updatedAt: it.updatedAt ? Date.parse(it.updatedAt) : null,
+    source:it.source || {type:'shop'}, seller:it.seller || {}
+  }));
+}
+
+class RecognizeError extends Error { constructor(code){ super(code); this.code = code; } }
+
+async function recognizeImage(file, signal){
+  if (CONFIG.recognizeEndpoint) {
+    const fd = new FormData(); fd.append('image', file);
+    let res;
+    try { res = await fetch(CONFIG.recognizeEndpoint, {method:'POST', body:fd, signal}); }
+    catch (e) { if (e.name === 'AbortError') throw e; throw new RecognizeError('unavailable'); }
+    if (res.status === 401 || res.status === 403) throw new RecognizeError('denied');
+    if (res.status === 429) throw new RecognizeError('rate');
+    if (!res.ok) throw new RecognizeError('unavailable');
+    const data = await res.json();
+    if (!data || !data.query) throw new RecognizeError('not_recognized');
+    return data;
+  }
+  // Демо-режим: без подключённой ИИ-модели «распознаём» товар по имени файла (например, iphone-15.jpg).
+  await delay(1300, signal);
+  const toks = queryTokens(file.name.replace(/\.[^.]+$/, ''));
+  let best = null, bestScore = 0;
+  for (const p of PRODUCTS) {
+    const bt = tokenize(p.brand), mt = tokenize(p.model);
+    let score = 0, strong = false;
+    if (bt.every(t => toks.includes(t))) { score += 2; strong = true; }
+    for (const t of mt) if (toks.includes(t)) { score += /^\d+$/.test(t) ? 1 : 2; if (!/^\d+$/.test(t)) strong = true; }
+    if (strong && score > bestScore) { best = p; bestScore = score; }
+  }
+  if (!best) throw new RecognizeError('not_recognized');
+  return { query: `${best.brand} ${best.model}`, category: best.cat };
+}
+
+/* ───────────────────────── Утилиты ───────────────────────── */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = n => new Intl.NumberFormat('ru-RU').format(n) + ' ₽';
+const plural = (n, f) => { const a = Math.abs(n) % 100, b = a % 10; return f[a > 10 && a < 20 ? 2 : b === 1 ? 0 : b >= 2 && b <= 4 ? 1 : 2]; };
+const safeUrl = u => { try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? x.href : null; } catch { return null; } };
+const host = u => { try { return new URL(u).hostname.replace(/^www\./,''); } catch { return u; } };
+function ago(ts){
+  if (!ts) return '';
+  const h = Math.floor((Date.now() - ts) / 3600e3);
+  return h < 1 ? 'Цена обновлена менее часа назад' : `Цена обновлена ${h} ${plural(h,['час','часа','часов'])} назад`;
+}
+const POPULAR = ['iPhone 15','Samsung Galaxy S24','Dyson V15','Nike Air Force 1','LEGO City','Pampers'];
+const chipsHTML = list => list.map(q => `<button type="button" class="chip" data-q="${esc(q)}">${esc(q)}</button>`).join('');
+
+/* ───────────────────────── Состояние ───────────────────────── */
+const state = { phase:'initial', q:'', cat:null, sub:null, src:'all', sort:'asc', shown:CONFIG.pageSize, results:[], openCat:null, token:0 };
+const input = $('#q'), findBtn = $('#findBtn');
+const DEFAULT_PH = input.placeholder;
+
+/* ───────────────────────── Поиск ───────────────────────── */
+async function runSearch({q = input.value, cat = state.cat, sub = state.sub} = {}){
+  q = q.trim();
+  hideSuggest();
+  if (!q && !cat) {
+    input.placeholder = 'Введите название, марку, модель или загрузите фото';
+    input.focus();
     return;
   }
-  $('#totals').innerHTML = rows.map(([id,v]) => {
-    const c = catOf(type,id), p = v/total*100, key = type+':'+id;
-    const pTxt = p > 0 && p < .5 ? '<1%' : Math.round(p) + '%';
-    return `<button type="button" class="trow" data-key="${key}" aria-pressed="${ui.cat === key}" title="Показать в таблице только «${esc(c.name)}»">
-      <span class="tname">${c.emoji} ${esc(c.name)}</span><span class="tsum">${money(v)}</span><span class="tpct">${pTxt}</span>
-      <span class="tbar"><i style="width:${p}%;background:${c.color}"></i></span></button>`;
-  }).join('');
-  $('#totalsFoot').innerHTML = `<span class="muted">Всего за период</span><strong>${money(total)}</strong>`;
-}
-
-/* ---------- График ---------- */
-let chartData = null;
-function niceNum(x){
-  if (x <= 0) return 1;
-  const e = Math.pow(10, Math.floor(Math.log10(x))), f = x/e;
-  return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * e;
-}
-function renderChart(){
-  const sel = $('#chartCat');
-  sel.innerHTML = '<option value="">Доходы и расходы</option><optgroup label="Расходы по категории">' + catOptions('expense', false) + '</optgroup>';
-  if (ui.chartCat && !state.cats.expense.some(c => c.id === ui.chartCat)) ui.chartCat = '';
-  sel.value = ui.chartCat;
-  document.querySelectorAll('#chartMonths button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.n === ui.chartMonths));
-
-  const N = ui.chartMonths, now = new Date();
-  const months = [];
-  for (let k = N; k >= 0; k--){ const d = new Date(now.getFullYear(), now.getMonth()-k, 1); months.push({y:d.getFullYear(), m:d.getMonth(), key:d.getFullYear()+'-'+pad(d.getMonth()+1), inc:0, exp:0}); }
-  const idx = new Map(months.map((x,i) => [x.key,i]));
-  state.ops.forEach(o => {
-    const i = idx.get(o.date.slice(0,7));
-    if (i === undefined) return;
-    if (o.type === 'income') months[i].inc += o.amount;
-    else if (!ui.chartCat || o.catId === ui.chartCat) months[i].exp += o.amount;
-  });
-  months.forEach(x => x.bal = x.inc - x.exp);
-  const onlyExp = !!ui.chartCat;
-  chartData = {months, onlyExp};
-  const shown = months.slice(1);
-
-  const W = 680, H = 280, ml = 58, mr = 10, mt = 12, mb = 28, pw = W-ml-mr, ph = H-mt-mb;
-  const vals = shown.flatMap(x => onlyExp ? [x.exp] : [x.inc, x.exp, x.bal]);
-  let maxV = Math.max(0, ...vals), minV = Math.min(0, ...vals);
-  if (maxV === minV) maxV = 1000;
-  const step = niceNum((maxV-minV)/4);
-  const lo = Math.floor(minV/step)*step, hi = Math.ceil(maxV/step)*step;
-  const y = v => mt + (hi - v)/(hi - lo)*ph;
-  const gw = pw/N, bw = Math.min(22, gw*.32);
-  let s = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Столбчатая диаграмма доходов и расходов по месяцам">`;
-  for (let t = lo; t <= hi + step/2; t += step){
-    s += `<line class="${Math.abs(t) < step/1e6 ? 'zero' : 'grid'}" x1="${ml}" x2="${W-mr}" y1="${y(t)}" y2="${y(t)}"/>`;
-    s += `<text x="${ml-8}" y="${y(t)+4}" text-anchor="end">${fmtShort(t)}</text>`;
+  input.value = q;
+  Object.assign(state, {q, cat, sub, src:'all', shown:CONFIG.pageSize, phase:'loading'});
+  const my = ++state.token;
+  render();
+  $('#results').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+  try {
+    const items = await fetchOffers(q, cat, sub);
+    if (my !== state.token) return;
+    state.results = items;
+    state.phase = 'done';
+  } catch {
+    if (my !== state.token) return;
+    state.results = [];
+    state.phase = 'error';
   }
-  const bar = (cls,x,v) => { const top = y(Math.max(v,0)), h = Math.abs(y(v) - y(0)); return h > 0 ? `<rect class="${cls}" x="${x}" y="${top}" width="${bw}" height="${h}" rx="3"/>` : ''; };
-  shown.forEach((x,i) => {
-    const cx = ml + gw*i + gw/2;
-    if (onlyExp) s += bar('b-exp', cx - bw/2, x.exp);
-    else { s += bar('b-inc', cx - bw - 1, x.inc); s += bar('b-exp', cx + 1, x.exp); }
-    const lbl = MONTHS_SHORT[x.m] + (x.m === 0 || i === 0 ? ' ’' + String(x.y).slice(2) : '');
-    s += `<text x="${cx}" y="${H-8}" text-anchor="middle">${lbl}</text>`;
-  });
-  if (!onlyExp){
-    const pts = shown.map((x,i) => [ml + gw*i + gw/2, y(x.bal)]);
-    s += `<polyline class="line" points="${pts.map(p => p.join(',')).join(' ')}"/>`;
-    s += pts.map(p => `<circle class="dot" cx="${p[0]}" cy="${p[1]}" r="3.5"/>`).join('');
+  render();
+}
+
+function resetToInitial(){
+  state.token++;
+  Object.assign(state, {phase:'initial', q:'', cat:null, sub:null, results:[]});
+  render();
+}
+
+/* ───────────────────────── Отрисовка результатов ───────────────────────── */
+function sourceLabel(s){
+  if (s.type === 'mp') return `<span class="pill mp">Маркетплейс${s.place ? ' · ' + esc(s.place) : ''}</span>`;
+  if (s.type === 'app') return `<span class="pill app">Приложение${s.place ? ' · «' + esc(s.place) + '»' : ''}</span>`;
+  return `<span class="pill shop">Интернет-магазин</span>`;
+}
+function rowHTML(o, isBest){
+  const photo = o.photo === 'icon'
+    ? `<div class="r-photo" role="img" aria-label="${esc(o.name)}">${icon(o.cat)}</div>`
+    : o.photo && safeUrl(o.photo)
+      ? `<div class="r-photo"><img src="${esc(safeUrl(o.photo))}" alt="${esc(o.name)}" loading="lazy" decoding="async"></div>`
+      : `<div class="r-photo none">Нет фото</div>`;
+  const s = o.seller || {};
+  const site = safeUrl(s.site);
+  const contacts = [
+    s.name ? `<b>${esc(s.name)}</b>` : '',
+    s.phone ? `<a class="c" href="tel:${esc(s.phone.replace(/[^\d+]/g,''))}">☎ ${esc(s.phone)}</a>` : '',
+    s.email ? `<a class="c" href="mailto:${esc(s.email)}">✉ ${esc(s.email)}</a>` : '',
+    site ? `<a class="site" href="${esc(site)}" target="_blank" rel="noopener noreferrer">${esc(host(site))} ↗</a>`
+         : `<span class="nosite">${o.source.type === 'app' ? 'Покупка в приложении' : 'Сайта нет'}</span>`
+  ].join('');
+  return `<li class="row${isBest ? ' best' : ''}">
+    ${photo}
+    <div class="r-info">
+      <h3 class="r-name">${esc(o.name)}</h3>
+      ${sourceLabel(o.source)}
+      ${o.updatedAt ? `<p class="r-upd">${ago(o.updatedAt)}</p>` : ''}
+    </div>
+    <div class="r-contacts">${contacts}</div>
+    <div class="r-price">
+      ${isBest ? '<span class="best-tag">Лучшая цена</span>' : ''}
+      <span class="price">${fmt(o.price)}</span>
+      ${o.oldPrice && o.oldPrice > o.price ? `<s class="old"><span class="sr-only">Старая цена: </span>${fmt(o.oldPrice)}</s>` : ''}
+    </div>
+  </li>`;
+}
+const skeletonHTML = () => Array.from({length:4}, () => `<li class="row skel" aria-hidden="true">
+  <div class="r-photo sk"></div>
+  <div class="r-info"><div class="sk" style="height:18px;width:80%;margin-bottom:10px"></div><div class="sk" style="height:22px;width:150px;border-radius:999px"></div></div>
+  <div class="r-contacts"><div class="sk" style="height:14px;width:60%;margin-bottom:6px"></div><div class="sk" style="height:14px;width:80%"></div></div>
+  <div class="r-price"><div class="sk" style="height:28px;width:120px"></div></div></li>`).join('');
+
+function render(){
+  const stateBox = $('#stateBox'), list = $('#list'), summary = $('#summary');
+  const show = (el, v) => el.hidden = !v;
+  const active = state.phase !== 'initial';
+
+  // метки запроса и категории
+  const tags = [];
+  if (active && state.q) tags.push(`<span class="tag"><span>Запрос: «${esc(state.q)}»</span><button type="button" data-clear="q" aria-label="Сбросить запрос">✕</button></span>`);
+  if (active && state.cat) tags.push(`<span class="tag"><span>${esc(catById(state.cat).name)}${state.sub ? ' › ' + esc(state.sub) : ''}</span><button type="button" data-clear="cat" aria-label="Сбросить категорию">✕</button></span>`);
+  $('#tags').innerHTML = tags.join('');
+  show($('#tags'), tags.length);
+
+  findBtn.disabled = state.phase === 'loading';
+  show($('#toolbar'), state.phase === 'done' && state.results.length);
+  show(summary, false); show(list, false); show($('#moreWrap'), false); show($('#disclaimer'), false);
+  show($('#demoNote'), false);
+  stateBox.innerHTML = '';
+
+  if (state.phase === 'initial') {
+    stateBox.innerHTML = `<div class="state"><h3>Начните с поиска</h3><p>Введите название, марку или модель товара, выберите категорию или загрузите фото — покажем все предложения от самого дешёвого.</p><div class="chips-row">${chipsHTML(POPULAR)}</div></div>`;
+    return;
   }
-  shown.forEach((x,i) => {
-    s += `<rect class="hit" data-i="${i+1}" x="${ml+gw*i}" y="${mt}" width="${gw}" height="${ph}" tabindex="0" aria-label="${MONTHS[x.m]} ${x.y}: ${onlyExp ? 'расходы ' + money(x.exp) : 'доходы ' + money(x.inc) + ', расходы ' + money(x.exp) + ', остаток ' + money(x.bal,true)}"/>`;
-  });
-  s += '</svg>';
-  $('#chart').innerHTML = s;
-  hideTip();
-  const cat = onlyExp ? catOf('expense', ui.chartCat) : null;
-  $('#legend').innerHTML = onlyExp
-    ? `<span><i style="background:var(--exp)"></i>Расходы: ${cat.emoji} ${esc(cat.name)}</span>`
-    : `<span><i style="background:var(--inc)"></i>Доходы</span><span><i style="background:var(--exp)"></i>Расходы</span><span><i class="l-line" style="background:var(--accent);width:16px"></i>Остаток</span>`;
-}
-
-function changeLine(cur, prev){
-  if (!prev) return '<div class="d">к прошлому месяцу: нет данных</div>';
-  const d = cur - prev, p = d/prev*100;
-  return `<div class="d">к прошлому месяцу: ${d >= 0 ? '+' : '−'}${Math.abs(p).toFixed(0)}% (${money(d,true)})</div>`;
-}
-function showTip(hit){
-  const i = +hit.dataset.i, {months, onlyExp} = chartData, x = months[i], p = months[i-1];
-  document.querySelectorAll('.chart .hit.on').forEach(h => h.classList.remove('on'));
-  hit.classList.add('on');
-  const tip = $('#tip');
-  tip.innerHTML = `<h4>${MONTHS[x.m]} ${x.y}</h4>` + (onlyExp
-    ? `<div class="r"><span>Расходы</span><strong class="exp">${money(x.exp)}</strong></div>${changeLine(x.exp,p.exp)}`
-    : `<div class="r"><span>Доходы</span><strong class="inc">${money(x.inc)}</strong></div>${changeLine(x.inc,p.inc)}
-       <div class="r" style="margin-top:6px"><span>Расходы</span><strong class="exp">${money(x.exp)}</strong></div>${changeLine(x.exp,p.exp)}
-       <div class="r" style="margin-top:6px"><span>Остаток</span><strong>${money(x.bal,true)}</strong></div>`);
-  const wrap = $('#chartWrap').getBoundingClientRect(), r = hit.getBoundingClientRect();
-  const cx = r.left - wrap.left + r.width/2;
-  let left = cx > wrap.width/2 ? r.left - wrap.left - tip.offsetWidth - 4 : r.right - wrap.left + 4;
-  left = Math.max(0, Math.min(wrap.width - tip.offsetWidth, left));
-  tip.style.left = left + 'px';
-  tip.classList.add('show');
-}
-function hideTip(){
-  $('#tip').classList.remove('show');
-  document.querySelectorAll('.chart .hit.on').forEach(h => h.classList.remove('on'));
-}
-
-/* ---------- Форма ---------- */
-function renderForm(){
-  const t = ui.formType;
-  document.querySelectorAll('#typeToggle button').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === t));
-  $('#aCatLabel').textContent = t === 'income' ? 'Источник' : 'Категория';
-  const sel = $('#aCat'), prev = sel.value;
-  sel.innerHTML = catOptions(t, true);
-  if ([...sel.options].some(o => o.value === prev)) sel.value = prev;
-  $('#aSubmit').textContent = t === 'income' ? 'Добавить доход' : 'Добавить расход';
-  if (!$('#aDate').value) $('#aDate').value = today();
-}
-
-/* ---------- Таблица ---------- */
-function tableRows(){
-  const r = periodRange(), f = ui.cat ? parseKey(ui.cat) : null;
-  const rows = state.ops.filter(o => inRange(o,r) && (ui.tab === 'all' || o.type === ui.tab)
-    && (!f || (o.type === f.type && o.catId === f.id)) && (!ui.author || o.by === ui.author));
-  const d = ui.sortDir;
-  rows.sort(ui.sortKey === 'amount'
-    ? (a,b) => (a.amount - b.amount)*d || (b.date < a.date ? -1 : 1)
-    : (a,b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : a.createdAt - b.createdAt)*d);
-  return rows;
-}
-function renderTable(){
-  document.querySelectorAll('#tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === ui.tab));
-  $('#thCat').textContent = ui.tab === 'income' ? 'Источник' : ui.tab === 'all' ? 'Категория / источник' : 'Категория';
-  document.querySelectorAll('th .sort').forEach(b => {
-    const on = b.dataset.sort === ui.sortKey;
-    b.textContent = (b.dataset.sort === 'date' ? 'Дата' : 'Сумма') + (on ? (ui.sortDir < 0 ? ' ↓' : ' ↑') : '');
-    b.closest('th').setAttribute('aria-sort', on ? (ui.sortDir < 0 ? 'descending' : 'ascending') : 'none');
-  });
-  const rows = tableRows(), vis = rows.slice(0, ui.limit);
-  const tb = $('#tbody');
-  if (!rows.length){
-    tb.innerHTML = `<tr><td colspan="6" class="empty">Нет операций за выбранный период${ui.cat || ui.author ? ' с такими фильтрами' : ''}</td></tr>`;
-  } else {
-    tb.innerHTML = vis.map(o => {
-      const c = catOf(o.type, o.catId), who = memberName(o.by);
-      const amt = ui.tab === 'all' ? money(o.type === 'income' ? o.amount : -o.amount, true) : money(o.amount);
-      return `<tr data-id="${o.id}" tabindex="0" aria-label="${fmtDate(o.date)}, ${amt}, ${esc(c.name)}. Enter — редактировать">
-        <td class="c-date">${fmtDate(o.date)}</td>
-        <td class="c-amt ${o.type}">${amt}</td>
-        <td><span class="chip" style="--c:${c.color}">${c.emoji} ${esc(c.name)}</span><div class="sub m-only">${esc([o.desc, who].filter(Boolean).join(' · '))}</div></td>
-        <td class="c-desc" title="${esc(o.desc)}">${esc(o.desc) || '—'}</td>
-        <td class="c-who">${esc(who)}</td>
-        <td class="c-act"><button type="button" data-act="edit" aria-label="Редактировать" title="Редактировать">✏️</button><button type="button" data-act="del" aria-label="Удалить" title="Удалить">🗑</button></td>
-      </tr>`;
-    }).join('');
+  if (state.phase === 'loading') {
+    stateBox.innerHTML = `<div class="loading"><span class="spin" aria-hidden="true"></span>Опрашиваем маркетплейсы, магазины и приложения…</div>`;
+    list.innerHTML = skeletonHTML(); show(list, true);
+    return;
   }
-  const more = $('#moreBtn');
-  more.hidden = rows.length <= ui.limit;
-  more.textContent = `Показать ещё (${Math.min(PAGE, rows.length - ui.limit)} из ${rows.length - ui.limit})`;
-  $('#rowCount').textContent = rows.length ? `Показано ${vis.length} из ${rows.length}` : '';
-  const inc = sum(rows.filter(o => o.type === 'income')), exp = sum(rows.filter(o => o.type === 'expense'));
-  $('#tableTotal').innerHTML = ui.tab === 'expense' ? `Итого расходов: <span class="exp">${money(exp)}</span>`
-    : ui.tab === 'income' ? `Итого доходов: <span class="inc">${money(inc)}</span>`
-    : `<span class="inc">${money(inc,true)}</span> · <span class="exp">${money(-exp,true)}</span> · Остаток ${money(inc-exp,true)}`;
+  if (state.phase === 'error') {
+    stateBox.innerHTML = `<div class="state"><h3>Не удалось выполнить поиск</h3><p>Сервис временно недоступен. Попробуйте ещё раз через минуту.</p><button type="button" class="btn-primary" data-retry>Повторить</button></div>`;
+    return;
+  }
+  if (!state.results.length) {
+    const alt = POPULAR.slice(0, 4);
+    const where = state.q ? `По запросу «${esc(state.q)}»` : 'В выбранной категории';
+    stateBox.innerHTML = `<div class="state"><h3>Ничего не найдено</h3><p>${where} предложений нет. Проверьте написание, уберите лишние слова, выберите категорию или попробуйте найти по фото.</p><div class="chips-row">${chipsHTML(alt)}</div></div>`;
+    return;
+  }
+
+  // фильтр по источнику
+  const counts = {all: state.results.length, mp:0, shop:0, app:0};
+  for (const o of state.results) counts[o.source.type] = (counts[o.source.type] || 0) + 1;
+  for (const b of document.querySelectorAll('#seg button')) {
+    const k = b.dataset.src;
+    b.setAttribute('aria-pressed', String(k === state.src));
+    b.innerHTML = `${{all:'Все',mp:'Маркетплейсы',shop:'Магазины',app:'Приложения'}[k]} <small>${counts[k]}</small>`;
+  }
+  $('#sort').value = state.sort;
+
+  const filtered = state.src === 'all' ? state.results : state.results.filter(o => o.source.type === state.src);
+  if (!filtered.length) {
+    stateBox.innerHTML = `<div class="state"><h3>В этом источнике предложений нет</h3><p>Выберите «Все», чтобы увидеть предложения из других источников.</p><button type="button" class="btn-primary" data-src-all>Показать все</button></div>`;
+    return;
+  }
+  const asc = filtered.slice().sort((a,b) => a.price - b.price);
+  const bestId = asc[0].id;
+  const sorted = state.sort === 'asc' ? asc : filtered.slice().sort((a,b) => b.price - a.price || (a.id === bestId ? 1 : b.id === bestId ? -1 : 0));
+  const n = filtered.length;
+  summary.innerHTML = `Найдено <b>${n}</b> ${plural(n,['предложение','предложения','предложений'])} · цены от <b>${fmt(asc[0].price)}</b> до <b>${fmt(asc[n-1].price)}</b>`;
+  show(summary, true);
+  show($('#demoNote'), !CONFIG.searchEndpoint);
+
+  list.innerHTML = sorted.slice(0, state.shown).map(o => rowHTML(o, o.id === bestId)).join('');
+  show(list, true);
+  const rest = n - state.shown;
+  if (rest > 0) {
+    const k = Math.min(rest, CONFIG.pageSize);
+    $('#moreBtn').textContent = `Показать ещё ${k}`;
+    show($('#moreWrap'), true);
+  }
+  show($('#disclaimer'), true);
 }
 
-/* ---------- Утилиты UI ---------- */
-let toastT;
-function toast(msg){
-  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
-  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2800);
+/* ───────────────────────── Категории ───────────────────────── */
+function renderCats(){
+  $('#cats').innerHTML = CATS.map(c => `<button type="button" class="cat" data-cat="${c.id}" aria-expanded="${state.openCat === c.id}" aria-controls="subpanel">${icon(c.id)}<span>${esc(c.name)}</span></button>`).join('');
 }
-function confirmDialog(title, text, okLabel){
-  const d = $('#confirmDlg');
-  $('#confirmTitle').textContent = title;
-  $('#confirmText').textContent = text;
-  $('#confirmOk').textContent = okLabel || 'Удалить';
-  d.returnValue = '';
-  d.showModal();
-  return new Promise(res => d.addEventListener('close', () => res(d.returnValue === 'ok'), {once:true}));
+function renderSubpanel(){
+  const panel = $('#subpanel');
+  const c = catById(state.openCat);
+  if (!c) { panel.hidden = true; panel.innerHTML = ''; return; }
+  const q = input.value.trim();
+  const first = q ? `Искать «${esc(q)}» здесь` : 'Самые дешёвые в категории';
+  panel.innerHTML = `<h3>${esc(c.name)}</h3><div class="btns">
+    <button type="button" class="btn-primary" data-pick="">${first}</button>
+    ${c.subs.map(s => `<button type="button" class="btn-ghost" data-pick="${esc(s)}">${esc(s)}</button>`).join('')}</div>`;
+  panel.hidden = false;
 }
-function commit(){ save(); render(); }
+$('#cats').addEventListener('click', e => {
+  const b = e.target.closest('.cat'); if (!b) return;
+  state.openCat = state.openCat === b.dataset.cat ? null : b.dataset.cat;
+  renderCats(); renderSubpanel();
+  document.querySelector(`.cat[data-cat="${b.dataset.cat}"]`).focus();
+});
+$('#subpanel').addEventListener('click', e => {
+  const b = e.target.closest('[data-pick]'); if (!b) return;
+  runSearch({q: input.value, cat: state.openCat, sub: b.dataset.pick || null});
+});
 
-async function deleteOp(id){
-  const o = state.ops.find(x => x.id === id);
-  if (!o) return false;
-  const c = catOf(o.type, o.catId);
-  const ok = await confirmDialog(o.type === 'income' ? 'Удалить доход?' : 'Удалить расход?', `${fmtDate(o.date)} · ${money(o.amount)} · ${c.name}${o.desc ? ' · ' + o.desc : ''}`);
-  if (!ok) return false;
-  state.ops = state.ops.filter(x => x.id !== id);
-  commit(); toast('Запись удалена');
-  return true;
+/* ───────────────────────── Подсказки ───────────────────────── */
+const suggest = $('#suggest');
+let suggItems = [], suggIdx = -1;
+function showSuggest(){
+  suggItems = suggestFor(input.value);
+  suggIdx = -1;
+  if (!suggItems.length || document.activeElement !== input) return hideSuggest();
+  suggest.innerHTML = suggItems.map((s,i) => `<li role="option" id="sg${i}" aria-selected="false" data-i="${i}"><span>${esc(s.text)}</span><small>${esc(s.kind)}</small></li>`).join('');
+  suggest.hidden = false;
+  input.setAttribute('aria-expanded','true');
 }
-
-/* ---------- Редактирование ---------- */
-let editId = null;
-function openEdit(id){
-  const o = state.ops.find(x => x.id === id);
-  if (!o) return;
-  editId = id;
-  $('#eTitle').textContent = o.type === 'income' ? 'Редактировать доход' : 'Редактировать расход';
-  $('#eMeta').textContent = 'Добавил(а): ' + memberName(o.by);
-  $('#eCatLabel').textContent = o.type === 'income' ? 'Источник' : 'Категория';
-  $('#eAmount').value = amountToInput(o.amount);
-  $('#eAmount').removeAttribute('aria-invalid');
-  $('#eDate').value = o.date;
-  $('#eCat').innerHTML = catOptions(o.type, true, o.catId);
-  $('#eCat').value = o.catId;
-  $('#eDesc').value = o.desc;
-  $('#eErr').textContent = '';
-  $('#editDlg').showModal();
-  $('#eAmount').focus();
+function hideSuggest(){ suggest.hidden = true; input.setAttribute('aria-expanded','false'); input.removeAttribute('aria-activedescendant'); suggIdx = -1; }
+function moveSugg(d){
+  if (suggest.hidden) return;
+  suggIdx = (suggIdx + d + suggItems.length) % suggItems.length;
+  suggest.querySelectorAll('li').forEach((li,i) => li.setAttribute('aria-selected', String(i === suggIdx)));
+  input.setAttribute('aria-activedescendant', 'sg' + suggIdx);
 }
+input.addEventListener('input', () => { input.placeholder = DEFAULT_PH; showSuggest(); if (state.openCat) renderSubpanel(); });
+input.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown') { e.preventDefault(); moveSugg(1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); moveSugg(-1); }
+  else if (e.key === 'Escape') hideSuggest();
+  else if (e.key === 'Enter' && suggIdx >= 0 && !suggest.hidden) { e.preventDefault(); runSearch({q: suggItems[suggIdx].text}); }
+});
+input.addEventListener('blur', () => setTimeout(hideSuggest, 150));
+suggest.addEventListener('mousedown', e => {
+  const li = e.target.closest('li'); if (!li) return;
+  e.preventDefault();
+  runSearch({q: suggItems[+li.dataset.i].text});
+});
 
-/* ---------- Настройки ---------- */
-function nameTaken(type, name, exceptId){
-  const n = name.trim().toLowerCase();
-  return state.cats[type].some(c => c.id !== exceptId && c.name.toLowerCase() === n);
+/* ───────────────────────── Форма ───────────────────────── */
+$('#searchForm').addEventListener('submit', e => { e.preventDefault(); runSearch(); });
+$('#popular').insertAdjacentHTML('beforeend', chipsHTML(POPULAR));
+document.addEventListener('click', e => {
+  const chip = e.target.closest('.chip[data-q]');
+  if (chip) return runSearch({q: chip.dataset.q, cat: null, sub: null});
+  const clr = e.target.closest('[data-clear]');
+  if (clr) {
+    if (clr.dataset.clear === 'q') { input.value = ''; state.cat ? runSearch({q:'', cat:state.cat, sub:state.sub}) : resetToInitial(); }
+    else { state.q ? runSearch({q: state.q, cat:null, sub:null}) : (input.value = '', resetToInitial()); }
+    return;
+  }
+  if (e.target.closest('[data-retry]')) return runSearch({q: state.q});
+  if (e.target.closest('[data-src-all]')) { state.src = 'all'; render(); }
+});
+$('#seg').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  state.src = b.dataset.src; state.shown = CONFIG.pageSize; render();
+});
+$('#sort').addEventListener('change', e => { state.sort = e.target.value; state.shown = CONFIG.pageSize; render(); });
+$('#moreBtn').addEventListener('click', () => {
+  const firstNew = state.shown;
+  state.shown += CONFIG.pageSize; render();
+  $('#list').children[firstNew]?.querySelector('a, h3')?.focus?.();
+});
+
+/* ───────────────────────── Поиск по фото ───────────────────────── */
+const fileInput = $('#file'), box = $('#searchBox'), preview = $('#preview'), photoStatus = $('#photoStatus'), formMsg = $('#formMsg');
+const OK_TYPES = ['image/jpeg','image/png','image/webp','image/heic','image/heif'];
+const OK_EXT = /\.(jpe?g|png|webp|heic|heif)$/i;
+const ERR = {
+  not_recognized:'Не удалось распознать товар на фото. Впишите название вручную или попробуйте другой снимок.',
+  denied:'Распознавание фото не разрешено. Разрешите его или впишите название вручную.',
+  rate:'Слишком много запросов. Подождите минуту или впишите название вручную.',
+  unavailable:'Сервис распознавания сейчас недоступен. Впишите название вручную.'
+};
+let photoCtrl = null, photoUrl = null;
+
+function setStatus(html, cls = ''){ photoStatus.className = 'status ' + cls; photoStatus.innerHTML = html; }
+function clearPhoto(){
+  photoCtrl?.abort(); photoCtrl = null;
+  if (photoUrl) URL.revokeObjectURL(photoUrl);
+  photoUrl = null; preview.hidden = true; fileInput.value = '';
 }
-function catListHTML(type){
-  return state.cats[type].map(c => c.isDefault
-    ? `<li class="citem ${c.isHidden ? 'is-hidden' : ''}"><span class="cemoji">${c.emoji}</span><span class="cname">${esc(c.name)}</span><span class="badge">готовая</span>
-        ${c.name === 'Прочее' ? '' : `<button type="button" class="btn ghost sm" data-action="toggle-hide" data-type="${type}" data-id="${c.id}">${c.isHidden ? 'Показать' : 'Скрыть'}</button>`}</li>`
-    : `<li class="citem"><input class="cemoji-in" maxlength="4" value="${esc(c.emoji)}" data-field="emoji" data-type="${type}" data-id="${c.id}" aria-label="Эмодзи">
-        <input class="cname" maxlength="40" value="${esc(c.name)}" data-field="name" data-type="${type}" data-id="${c.id}" aria-label="Название">
-        <input type="color" value="${c.color}" data-field="color" data-type="${type}" data-id="${c.id}" aria-label="Цвет">
-        <button type="button" class="btn link-danger sm" data-action="del-cat" data-type="${type}" data-id="${c.id}">Удалить</button></li>`).join('');
+async function handleFile(file){
+  if (!file) return;
+  formMsg.textContent = '';
+  if (!(OK_TYPES.includes(file.type) || OK_EXT.test(file.name))) { clearPhoto(); formMsg.textContent = 'Этот формат не подходит. Загрузите фото в JPG, PNG, WEBP или HEIC.'; return; }
+  if (file.size > 10 * 1024 * 1024) { clearPhoto(); formMsg.textContent = 'Файл больше 10 МБ. Выберите фото поменьше.'; return; }
+  clearPhoto();
+  photoUrl = URL.createObjectURL(file);
+  const thumb = $('#thumb');
+  thumb.innerHTML = '';
+  const img = new Image();
+  img.alt = 'Загруженное фото';
+  img.onerror = () => { thumb.textContent = 'HEIC'; };
+  img.src = photoUrl;
+  thumb.appendChild(img);
+  $('#fname').textContent = file.name;
+  setStatus('<span class="mini-spin" aria-hidden="true"></span>Распознаём товар на фото…');
+  preview.hidden = false;
+  const ctrl = photoCtrl = new AbortController();
+  try {
+    const r = await recognizeImage(file, ctrl.signal);
+    if (ctrl !== photoCtrl) return;
+    input.value = r.query;
+    setStatus(`Распознано: <b>${esc(r.query)}</b>. Можно уточнить запрос и нажать «Найти».`, 'ok');
+    runSearch({q: r.query, cat: null, sub: null});
+  } catch (e) {
+    if (e.name === 'AbortError' || ctrl !== photoCtrl) return;
+    setStatus(esc(ERR[e.code] || ERR.unavailable), 'err');
+    input.focus();
+  }
 }
-function renderSettings(){
-  const f = state.family;
-  const me = state.members.find(m => m.id === state.currentMemberId);
-  const isOwner = me && me.role === 'owner';
-  $('#settingsBody').innerHTML = `
-    <section>
-      <div class="grid2">
-        <label class="field">Название семьи<input id="setName" maxlength="60" value="${esc(f.name)}"></label>
-        <label class="field">Начальный остаток, ₸<input id="setOpening" inputmode="decimal" value="${amountToInput(f.openingBalance)}" ${isOwner ? '' : 'disabled title="Изменяет только владелец"'}></label>
-      </div>
-    </section>
-    <section class="set-sec">
-      <h3>Участники</h3>
-      <ul class="members">${state.members.map(m => `<li><span class="avatar">${esc((m.name[0]||'?').toUpperCase())}</span>${esc(m.name)} <span class="badge">${m.role === 'owner' ? 'владелец' : 'участник'}</span></li>`).join('')}</ul>
-      <div class="invite"><span class="hint">Код приглашения:</span><code>${esc(f.inviteCode)}</code>
-        <button type="button" class="btn ghost sm" data-action="copy-invite">Скопировать</button>
-        ${isOwner ? '<button type="button" class="btn ghost sm" data-action="regen-invite">Новый код</button>' : ''}</div>
-      <form class="cadd" id="addMember"><input name="name" maxlength="40" placeholder="Имя нового участника" required aria-label="Имя нового участника"><button class="btn">Добавить участника</button></form>
-      <p class="hint" style="margin:6px 0 0">В этой версии данные хранятся в браузере, поэтому участник добавляется вручную и выбирается в шапке сайта.</p>
-    </section>
-    <section class="set-sec">
-      <h3>Категории расходов</h3>
-      <ul class="clist">${catListHTML('expense')}</ul>
-      <form class="cadd" data-type="expense"><input name="emoji" maxlength="4" placeholder="🏷" aria-label="Эмодзи"><input name="name" maxlength="40" placeholder="Новая категория" required aria-label="Название категории"><input type="color" name="color" value="#5b8def" aria-label="Цвет"><button class="btn">Добавить</button></form>
-    </section>
-    <section class="set-sec">
-      <h3>Источники доходов</h3>
-      <ul class="clist">${catListHTML('income')}</ul>
-      <form class="cadd" data-type="income"><input name="emoji" maxlength="4" placeholder="🏷" aria-label="Эмодзи"><input name="name" maxlength="40" placeholder="Новый источник" required aria-label="Название источника"><input type="color" name="color" value="#2fa37a" aria-label="Цвет"><button class="btn">Добавить</button></form>
-    </section>
-    <section class="set-sec">
-      <h3>Данные</h3>
-      <p class="hint" style="margin:0 0 10px">Все записи сохраняются в этом браузере (localStorage). Операций: ${state.ops.length}.</p>
-      <div class="dlg-actions" style="justify-content:flex-start">
-        <button type="button" class="btn ghost" data-action="demo">Заменить демо-данными</button>
-        <button type="button" class="btn link-danger" data-action="wipe">Удалить все данные</button>
-      </div>
-    </section>`;
-}
+$('#camBtn').addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
+$('#photoX').addEventListener('click', () => { clearPhoto(); input.focus(); });
 
-/* ---------- События ---------- */
-function bind(){
-  $('#presets').addEventListener('click', e => {
-    const b = e.target.closest('button'); if (!b) return;
-    if (b.dataset.p === 'custom' && ui.period !== 'custom'){ const r = periodRange(); ui.from = r.from; ui.to = r.to; }
-    ui.period = b.dataset.p; ui.limit = PAGE; render();
-  });
-  ['#fFrom','#fTo'].forEach(s => $(s).addEventListener('change', () => {
-    ui.period = 'custom'; ui.from = $('#fFrom').value; ui.to = $('#fTo').value; ui.limit = PAGE; render();
-  }));
-  $('#fCat').addEventListener('change', e => {
-    ui.cat = e.target.value; ui.limit = PAGE;
-    if (ui.cat && ui.tab !== 'all') ui.tab = parseKey(ui.cat).type;
-    render();
-  });
-  $('#fAuthor').addEventListener('change', e => { ui.author = e.target.value; ui.limit = PAGE; render(); });
-  $('#resetFilters').addEventListener('click', () => { Object.assign(ui, {period:'month', cat:'', author:'', limit:PAGE}); render(); });
+let dragDepth = 0;
+const hasFiles = e => [...(e.dataTransfer?.types || [])].includes('Files');
+box.addEventListener('dragenter', e => { if (!hasFiles(e)) return; e.preventDefault(); dragDepth++; box.classList.add('drag'); });
+box.addEventListener('dragover', e => { if (!hasFiles(e)) return; e.preventDefault(); e.dataTransfer.dropEffect = 'copy'; });
+box.addEventListener('dragleave', () => { if (--dragDepth <= 0) { dragDepth = 0; box.classList.remove('drag'); } });
+box.addEventListener('drop', e => { e.preventDefault(); dragDepth = 0; box.classList.remove('drag'); handleFile(e.dataTransfer.files[0]); });
+window.addEventListener('dragover', e => e.preventDefault());
+window.addEventListener('drop', e => e.preventDefault());
 
-  $('#totals').addEventListener('click', e => {
-    const b = e.target.closest('.trow'); if (!b) return;
-    ui.cat = ui.cat === b.dataset.key ? '' : b.dataset.key; ui.limit = PAGE; render();
-  });
+/* ───────────────────────── Документы и cookie ───────────────────────── */
+document.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => $('#' + b.dataset.open).showModal()));
+document.querySelectorAll('dialog').forEach(d => {
+  d.addEventListener('click', e => { if (e.target === d || e.target.closest('[data-close]')) d.close(); });
+});
+const cookie = $('#cookie');
+let cookieOk = false;
+try { cookieOk = localStorage.getItem('cookieOk') === '1'; } catch {}
+cookie.hidden = cookieOk;
+$('#cookieOk').addEventListener('click', () => { cookie.hidden = true; try { localStorage.setItem('cookieOk','1'); } catch {} });
 
-  $('#chartCat').addEventListener('change', e => { ui.chartCat = e.target.value; renderChart(); });
-  $('#chartMonths').addEventListener('click', e => { const b = e.target.closest('button'); if (b){ ui.chartMonths = +b.dataset.n; renderChart(); } });
-  const chart = $('#chart');
-  chart.addEventListener('pointermove', e => { const h = e.target.closest('.hit'); if (h) showTip(h); });
-  chart.addEventListener('click', e => { const h = e.target.closest('.hit'); if (h) showTip(h); });
-  chart.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') hideTip(); });
-  chart.addEventListener('focusin', e => { const h = e.target.closest('.hit'); if (h) showTip(h); });
-  chart.addEventListener('focusout', hideTip);
-
-  $('#typeToggle').addEventListener('click', e => {
-    const b = e.target.closest('button'); if (!b) return;
-    ui.formType = b.dataset.t; renderForm(); $('#aAmount').focus();
-  });
-  $('#addForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const amtEl = $('#aAmount'), err = $('#aErr');
-    const amount = parseAmount(amtEl.value);
-    if (amount === null){
-      amtEl.setAttribute('aria-invalid','true');
-      err.textContent = 'Введите сумму больше нуля (не более 2 знаков после запятой).';
-      amtEl.focus(); return;
-    }
-    const catId = $('#aCat').value;
-    if (!catId){ err.textContent = 'Выберите ' + (ui.formType === 'income' ? 'источник.' : 'категорию.'); return; }
-    amtEl.removeAttribute('aria-invalid'); err.textContent = '';
-    const date = $('#aDate').value || today();
-    const op = {id:uid(), type:ui.formType, amount, catId, desc:$('#aDesc').value.trim().slice(0,200), date, by:state.currentMemberId, createdAt:Date.now()};
-    state.ops.push(op);
-    if (ui.tab !== 'all' && ui.tab !== op.type) ui.tab = op.type;
-    commit();
-    amtEl.value = ''; $('#aDesc').value = ''; amtEl.focus();
-    const r = periodRange();
-    toast((op.type === 'income' ? 'Доход ' : 'Расход ') + money(amount) + ' добавлен' + (inRange(op,r) ? '' : ' (дата вне выбранного периода)'));
-  });
-  $('#aAmount').addEventListener('input', e => { e.target.removeAttribute('aria-invalid'); $('#aErr').textContent = ''; });
-
-  $('#tabs').addEventListener('click', e => {
-    const b = e.target.closest('button'); if (!b) return;
-    ui.tab = b.dataset.tab; ui.limit = PAGE;
-    if (ui.cat && ui.tab !== 'all' && parseKey(ui.cat).type !== ui.tab) ui.cat = '';
-    render();
-  });
-  document.querySelectorAll('th .sort').forEach(b => b.addEventListener('click', () => {
-    if (ui.sortKey === b.dataset.sort) ui.sortDir *= -1; else { ui.sortKey = b.dataset.sort; ui.sortDir = -1; }
-    renderTable();
-  }));
-  $('#tbody').addEventListener('click', e => {
-    const tr = e.target.closest('tr[data-id]'); if (!tr) return;
-    const act = e.target.closest('[data-act]');
-    if (act && act.dataset.act === 'del') deleteOp(tr.dataset.id); else openEdit(tr.dataset.id);
-  });
-  $('#tbody').addEventListener('keydown', e => {
-    const tr = e.target.closest('tr[data-id]'); if (!tr || e.target !== tr) return;
-    if (e.key === 'Enter'){ e.preventDefault(); openEdit(tr.dataset.id); }
-    if (e.key === 'Delete'){ e.preventDefault(); deleteOp(tr.dataset.id); }
-  });
-  $('#moreBtn').addEventListener('click', () => { ui.limit += PAGE; renderTable(); });
-
-  $('#memberSwitch').addEventListener('change', e => { state.currentMemberId = e.target.value; commit(); toast('Теперь записи вносит: ' + memberName(e.target.value)); });
-  $('#fab').addEventListener('click', () => { $('#addCard').scrollIntoView({behavior:'smooth', block:'center'}); setTimeout(() => $('#aAmount').focus({preventScroll:true}), 300); });
-
-  // Редактирование
-  $('#eCancel').addEventListener('click', () => $('#editDlg').close());
-  $('#editForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const o = state.ops.find(x => x.id === editId); if (!o) return;
-    const amount = parseAmount($('#eAmount').value);
-    if (amount === null){ $('#eAmount').setAttribute('aria-invalid','true'); $('#eErr').textContent = 'Введите сумму больше нуля (не более 2 знаков после запятой).'; return; }
-    if (!$('#eDate').value){ $('#eErr').textContent = 'Укажите дату.'; return; }
-    Object.assign(o, {amount, date:$('#eDate').value, catId:$('#eCat').value, desc:$('#eDesc').value.trim().slice(0,200)});
-    $('#editDlg').close(); commit(); toast('Изменения сохранены');
-  });
-  $('#eDelete').addEventListener('click', async () => { if (await deleteOp(editId)) $('#editDlg').close(); });
-
-  // Приветствие
-  $('#welcomeDlg').addEventListener('cancel', e => e.preventDefault());
-  $('#welcomeForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const fam = $('#wFamily').value.trim(), name = $('#wName').value.trim();
-    const openRaw = $('#wOpening').value.trim();
-    const opening = openRaw ? parseAmount(openRaw, true) : 0;
-    if (!fam || !name){ $('#wErr').textContent = 'Укажите название семьи и ваше имя.'; return; }
-    if (opening === null){ $('#wErr').textContent = 'Начальный остаток — число не меньше нуля.'; return; }
-    state = newState(fam, name, opening); $('#welcomeDlg').close(); commit();
-    toast('Семья создана. Добавьте первую трату!'); $('#aAmount').focus();
-  });
-  $('#demoBtn').addEventListener('click', () => { state = demoState(); $('#welcomeDlg').close(); commit(); toast('Загружены демо-данные за 12 месяцев'); });
-
-  // Настройки
-  $('#openSettings').addEventListener('click', () => { renderSettings(); $('#settingsDlg').showModal(); });
-  $('#closeSettings').addEventListener('click', () => $('#settingsDlg').close());
-  const sb = $('#settingsBody');
-  sb.addEventListener('change', e => {
-    const el = e.target;
-    if (el.id === 'setName'){
-      const v = el.value.trim(); if (!v){ el.value = state.family.name; return; }
-      state.family.name = v; commit(); return;
-    }
-    if (el.id === 'setOpening'){
-      const v = parseAmount(el.value || '0', true);
-      if (v === null){ toast('Начальный остаток — число не меньше нуля'); el.value = amountToInput(state.family.openingBalance); return; }
-      state.family.openingBalance = v; commit(); toast('Начальный остаток обновлён'); return;
-    }
-    if (!el.dataset.field) return;
-    const c = state.cats[el.dataset.type].find(x => x.id === el.dataset.id); if (!c) return;
-    if (el.dataset.field === 'name'){
-      const v = el.value.trim();
-      if (!v || nameTaken(el.dataset.type, v, c.id)){ toast(v ? 'Такое название уже есть' : 'Название не может быть пустым'); el.value = c.name; return; }
-      c.name = v;
-    } else if (el.dataset.field === 'emoji') c.emoji = el.value.trim() || '🏷';
-    else c.color = el.value;
-    commit();
-  });
-  sb.addEventListener('submit', e => {
-    e.preventDefault();
-    const f = e.target;
-    if (f.id === 'addMember'){
-      const n = f.name.value.trim(); if (!n) return;
-      state.members.push({id:uid(), name:n, role:'member'}); commit(); renderSettings(); toast(n + ' добавлен(а) в семью'); return;
-    }
-    const type = f.dataset.type, name = f.elements.name.value.trim();
-    if (!name) return;
-    if (nameTaken(type, name)){ toast('Категория «' + name + '» уже есть'); f.elements.name.focus(); return; }
-    state.cats[type].push({id:uid(), name, emoji:f.elements.emoji.value.trim() || '🏷', color:f.elements.color.value, isDefault:false, isHidden:false});
-    commit(); renderSettings(); toast('Добавлено: ' + name);
-  });
-  sb.addEventListener('click', async e => {
-    const b = e.target.closest('[data-action]'); if (!b) return;
-    const a = b.dataset.action, type = b.dataset.type, id = b.dataset.id;
-    if (a === 'toggle-hide'){
-      const c = state.cats[type].find(x => x.id === id); c.isHidden = !c.isHidden; commit(); renderSettings();
-    } else if (a === 'del-cat'){
-      const c = state.cats[type].find(x => x.id === id);
-      const n = state.ops.filter(o => o.type === type && o.catId === id).length;
-      const ok = await confirmDialog('Удалить «' + c.name + '»?', n ? `В ней ${n} операций — они будут перенесены в «Прочее».` : 'Операций в ней нет.');
-      if (!ok) return;
-      const other = state.cats[type].find(x => x.isDefault && x.name === 'Прочее');
-      state.ops.forEach(o => { if (o.type === type && o.catId === id) o.catId = other.id; });
-      state.cats[type] = state.cats[type].filter(x => x.id !== id);
-      if (ui.cat === type + ':' + id) ui.cat = '';
-      if (ui.chartCat === id) ui.chartCat = '';
-      commit(); renderSettings(); toast('Категория удалена');
-    } else if (a === 'copy-invite'){
-      const text = `Присоединяйтесь к семье «${state.family.name}» в трекере расходов. Код: ${state.family.inviteCode}`;
-      try { await navigator.clipboard.writeText(text); toast('Приглашение скопировано'); } catch(_){ toast('Код: ' + state.family.inviteCode); }
-    } else if (a === 'regen-invite'){
-      state.family.inviteCode = inviteCode(); commit(); renderSettings(); toast('Старый код больше не действует');
-    } else if (a === 'demo'){
-      if (!await confirmDialog('Заменить демо-данными?', 'Все текущие записи, категории и участники будут заменены примером за 12 месяцев.', 'Заменить')) return;
-      state = demoState(); Object.assign(ui, {cat:'', author:'', chartCat:''}); commit(); renderSettings(); toast('Загружены демо-данные');
-    } else if (a === 'wipe'){
-      if (!await confirmDialog('Удалить все данные?', 'Все записи этой семьи будут удалены из браузера без возможности восстановления.')) return;
-      try { localStorage.removeItem(LS_KEY); } catch(_){}
-      state = null; Object.assign(ui, {cat:'', author:'', chartCat:''});
-      $('#settingsDlg').close(); $('#welcomeDlg').showModal();
-    }
-  });
-}
-
-/* ---------- Старт ---------- */
-bind();
-$('#aDate').value = today();
-state = load();
-if (state) render(); else $('#welcomeDlg').showModal();
-})();
+$('#year').textContent = new Date().getFullYear();
+renderCats();
+render();
 </script>
 </body>
 </html>
